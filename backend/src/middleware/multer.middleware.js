@@ -28,13 +28,3 @@ export const upload = multer({
         }
     }
 });
-
-
-/*if (!req.file) {
-    throw new ApiError(400, "Document is required");
-}
-
-if (req.file.size < 10 * 1024) {
-    await fs.promises.unlink(req.file.path);
-    throw new ApiError(400, "File must be at least 10KB");
-} */

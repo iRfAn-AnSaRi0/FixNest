@@ -12,6 +12,21 @@ const userSchema = new Schema(
       match: [/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"],
     },
 
+    email: {
+      type: String,
+       required: function () {
+        return this.role === "user" || this.role === "technician"
+      },
+      trim: true,
+      unique: true,
+      index: true,
+      lowercase: true,
+      match: [
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+        "Please enter a valid email address"
+      ],
+    },
+
     phone: {
       type: String,
       required: [true, "Phone number is required"],
@@ -29,7 +44,7 @@ const userSchema = new Schema(
 
     isVerified: {
       type: Boolean,
-      required: function (){
+      required: function () {
         return this.role === "user" || this.role === "technician"
       },
       default: false,
@@ -121,7 +136,7 @@ const userSchema = new Schema(
       required: function () {
         return this.role === "technician"
       },
-       default: false,
+      default: false,
     },
 
     // ==========================
@@ -170,6 +185,11 @@ const userSchema = new Schema(
       required: function () {
         return this.role === "admin";
       }
+    },
+
+    lastActiveAt: {
+      type: Date,
+      default: Date.now
     }
   },
   { timestamps: true }

@@ -64,10 +64,18 @@ const allowRoles = (...roles) => {
   };
 };
 
-const requireApprovedTechnician = (req, _, next) => {
-  if (req.user.role === "technician" && req.user.status !== "approved") {
-    throw new ApiError(403, "Your account is not approved yet.");
+const requireApprovedTechnician = (req, res, next) => {
+  if (req.user.role === "technician" && req.user.status !== "active") {
+    return res.status(200).json({
+      success: true,
+      message: "Account pending approval",
+      data: {
+        user: req.user,
+        access: "limited", // 🔥 IMPORTANT FLAG
+      },
+    });
   }
+
   next();
 };
 

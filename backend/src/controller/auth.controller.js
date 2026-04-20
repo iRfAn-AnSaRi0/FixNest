@@ -7,6 +7,7 @@ import { User } from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import { uploadFile } from '../config/cloudinary.config.js';
 import { checkBlockedPhone } from '../utils/checkBlockedPhone.js';
+import { sendOtpEmail } from "../utils/sendOtp.js";
 
 const MAX_OTP_ATTEMPTS = 5;
 const OTP_BLOCK_TIME = 15 * 60;
@@ -25,20 +26,28 @@ const generateToken = (user) => {
 }
 
 const registerUser = asyncHandler(async (req, res, _) => {
-    const { name, phone } = req.body;
+    const { name, email, phone } = req.body;
 
-    if (!name || !phone) {
-        throw new ApiError(400, "Name and phone are required");
+    // console.log(name, phone, email);
+
+
+    if (!name || !phone || !email) {
+        throw new ApiError(400, "Name, email, and phone are required");
     }
 
     await checkBlockedPhone(phone);
 
-    const existingUser = await User.findOne({ phone });
+    const existingUser = await User.findOne({
+        $or: [
+            { email: email },
+            { phone: phone }
+        ]
+    });
     if (existingUser) {
-        throw new ApiError(400, "User with this phone number already exists");
+        throw new ApiError(400, "User with this phone & email number already exists");
     }
 
-    const cooldown = await redisClient.get(`otp-cooldown:${phone}`);
+    const cooldown = await redisClient.get(`otp-cooldown:${email}`);
     if (cooldown) {
         throw new ApiError(429, "Please wait before requesting OTP again");
     }
@@ -49,13 +58,14 @@ const registerUser = asyncHandler(async (req, res, _) => {
     const regData = {
         name,
         phone,
+        email,
         role,
         isVerified: false,
         status: "active",
     };
 
     await redisClient.set(
-        `register:${role}:${phone}`,
+        `register:${role}:${email}`,
         JSON.stringify(regData),
         { ex: 300 } // expires in 5 minutes
     );
@@ -67,15 +77,17 @@ const registerUser = asyncHandler(async (req, res, _) => {
         .update(otp)
         .digest("hex");
 
-    await redisClient.set(`otp:${role}:${phone}`, hashedOtp, { ex: 300 });// OTP expires in 5 minutes
+    await redisClient.set(`otp:${role}:${email}`, hashedOtp, { ex: 300 });// OTP expires in 5 minutes
 
     // 🔒 STEP 2: Set Cooldown (60 seconds)
-    await redisClient.set(`otp-cooldown:user:${phone}`, "1", { ex: 60 });
+    await redisClient.set(`otp-cooldown:user:${email}`, "1", { ex: 60 });
 
-    console.log(`OTP for ${phone}: ${hashedOtp} (original: ${otp})`); // In production, send this OTP via SMS
+    // console.log(`OTP for ${email}: ${hashedOtp} (original: ${otp})`); // In production, send this OTP via SMS
+
+    await sendOtpEmail(email, otp);
 
     return res.status(201).json(
-        new ApiResponse(201, {}, "OTP sent successfully")
+        new ApiResponse(201, { otp }, "OTP sent successfully")
     );
 
 })
@@ -132,7 +144,7 @@ const registerTechnician = asyncHandler(async (req, res, _) => {
     }
 
     // ✅ Upload after validations
-    const uploadIdProof = await uploadFile(req.file.path);
+    const uploadIdProof = await uploadFile(req.file.path, "fixnest/technician-documents");
 
     if (!uploadIdProof) {
         throw new ApiError(500, "Failed to upload ID proof image");
@@ -176,7 +188,7 @@ const registerTechnician = asyncHandler(async (req, res, _) => {
     // 🔒 STEP 2: Set Cooldown (60 seconds)
     await redisClient.set(`otp-cooldown:technician:${phone}`, "1", { ex: 60 });
 
-    console.log(`OTP for ${phone}: ${hashedOtp} (original: ${otp})`); // In production, send this OTP via SMS
+    // console.log(`OTP for ${phone}: ${hashedOtp} (original: ${otp})`); // In production, send this OTP via SMS
 
     return res.status(201).json(
         new ApiResponse(201, {}, "OTP sent successfully")
@@ -185,16 +197,16 @@ const registerTechnician = asyncHandler(async (req, res, _) => {
 })
 
 const verifyOtp = asyncHandler(async (req, res, _) => {
-    const { phone, otp } = req.body;
+    const { email, otp } = req.body;
 
-    if (!phone || !otp) {
-        throw new ApiError(400, "Phone and OTP are required");
+    if (!email || !otp) {
+        throw new ApiError(400, "Email and OTP are required");
     }
 
-    let storedHashedOtp = await redisClient.get(`otp:user:${phone}`);
+    let storedHashedOtp = await redisClient.get(`otp:user:${email}`);
     let role = "user";
     if (!storedHashedOtp) {
-        storedHashedOtp = await redisClient.get(`otp:technician:${phone}`);
+        storedHashedOtp = await redisClient.get(`otp:technician:${email}`);
         role = "technician";
     }
 
@@ -203,7 +215,7 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
     }
 
     // Check if phone is blocked due to too many failed attempts
-    const attempts = await redisClient.get(`otp-attempts:${role}:${phone}`);
+    const attempts = await redisClient.get(`otp-attempts:${role}:${email}`);
     if (attempts && Number(attempts) >= MAX_OTP_ATTEMPTS) {
         throw new ApiError(429, `Too many wrong OTP attempts. Try again after 15 minutes.`);
     }
@@ -222,14 +234,14 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
 
 
     if (!isMatch) {
-        const failed = await redisClient.incr(`otp-attempts:${role}:${phone}`);
+        const failed = await redisClient.incr(`otp-attempts:${role}:${email}`);
         if (failed === 1) {
-            await redisClient.expire(`otp-attempts:${role}:${phone}`, OTP_BLOCK_TIME);
+            await redisClient.expire(`otp-attempts:${role}:${email}`, OTP_BLOCK_TIME);
         }
 
         // ❗ If max attempts reached delete uploaded file
         if (failed >= MAX_OTP_ATTEMPTS) {
-            const regDataKey = `register:${role}:${phone}`;
+            const regDataKey = `register:${role}:${email}`;
             const regData = await redisClient.get(regDataKey);
 
             if (regData) {
@@ -248,17 +260,17 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
     }
 
     // ✅ OTP is correct — now get registration data
-    const regDataKey = `register:${role}:${phone}`;
+    const regDataKey = `register:${role}:${email}`;
     const regData = await redisClient.get(regDataKey);
     if (!regData) throw new ApiError(400, "Registration session expired");
     console.log("Redis raw value:", regData);
     const parsedData = regData;
 
     // Check if already exists (safety check)
-    const existingUser = await User.findOne({ phone });
+    const existingUser = await User.findOne({ email });
     if (existingUser) throw new ApiError(400, `${role === "user" ? "User" : "Technician"} already exists`);
 
-    console.log("Redis raw value:", regData);
+    // console.log("Redis raw value:", regData);
 
     // Create user
     if (role === "technician") parsedData.status = "pending"; // enforce pending
@@ -267,12 +279,14 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
     await user.save();
 
     // Clean up Redis
-    await redisClient.del(`otp:${role}:${phone}`);
-    await redisClient.del(`otp-attempts:${role}:${phone}`);
+    await redisClient.del(`otp:${role}:${email}`);
+    await redisClient.del(`otp-attempts:${role}:${email}`);
     await redisClient.del(regDataKey);
 
     const token = generateToken(user);
-    console.log(token);
+    // console.log(token);
+
+    // const cookieName = user.role === "technician" ? "techToken" : "userToken";
 
     const option = {
         httpOnly: true,
@@ -282,6 +296,7 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
 
     return res.status(200).cookie("token", token, option).json(
         new ApiResponse(200, {
+            user,
             token
         }, "Registration successful")
     )
@@ -290,13 +305,13 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
 
 
 const login = asyncHandler(async (req, res, _) => {
-    const {phone}  = req.body;
+    const { email } = req.body;
 
-    if (!phone) {
-        throw new ApiError(400, "Phone number is required")
+    if (!email) {
+        throw new ApiError(400, "Email is required")
     }
 
-    const user = await User.findOne({phone});
+    const user = await User.findOne({ email });
 
     if (!user) {
         throw new ApiError(404, "User not found")
@@ -306,7 +321,7 @@ const login = asyncHandler(async (req, res, _) => {
         throw new ApiError(400, "User is not verified. Please register first.")
     }
 
-    await checkBlockedPhone(phone);
+    await checkBlockedPhone(user.phone);
 
     // 🚫 Reject technician login if rejected
     if (user.role === "technician" && user.status === "rejected") {
@@ -314,7 +329,7 @@ const login = asyncHandler(async (req, res, _) => {
     }
 
     // ⏳ Cooldown check
-    const cooldown = await redisClient.get(`otp-cooldown:login:${phone}`);
+    const cooldown = await redisClient.get(`otp-cooldown:login:${email}`);
     if (cooldown) {
         throw new ApiError(429, "Please wait before requesting OTP again");
     }
@@ -327,40 +342,40 @@ const login = asyncHandler(async (req, res, _) => {
         .update(otp)
         .digest("hex");
 
-    await redisClient.set(`otp:login:${phone}`, hashedOtp, { ex: 300 }); // OTP expires in 5 minutes
+    await redisClient.set(`otp:login:${email}`, hashedOtp, { ex: 300 }); // OTP expires in 5 minutes
 
     // set cooldown
-    await redisClient.set(`otp-cooldown:login:${phone}`, "true", { ex: 60 });
+    await redisClient.set(`otp-cooldown:login:${email}`, "true", { ex: 60 });
 
-    console.log(`OTP for ${phone}: ${hashedOtp} (original: ${otp})`); // In production, send this OTP via SMS
-
+    // console.log(`OTP for ${email}: ${hashedOtp} (original: ${otp})`); // In production, send this OTP via SMS
+    await sendOtpEmail(email, otp);
     return res.status(200).json(
-        new ApiResponse(200, {}, "OTP sent successfully")
+        new ApiResponse(200, { otp }, "OTP sent successfully")
     );
 })
 
 
 const verifyLoginOtp = asyncHandler(async (req, res, _) => {
-    const { phone, otp } = req.body;
+    const { email, otp } = req.body;
 
-    if (!phone || !otp) {
-        throw new ApiError(400, "Phone and OTP are required");
+    if (!email || !otp) {
+        throw new ApiError(400, "Email and OTP are required");
     }
 
-    const user = await User.findOne({phone});
+    const user = await User.findOne({ email });
 
     if (!user) {
         throw new ApiError(404, "User not found")
     }
 
     // Check if phone is blocked due to too many failed attempts
-    const attempts = await redisClient.get(`otp-attempts:login:${phone}`);
+    const attempts = await redisClient.get(`otp-attempts:login:${email}`);
     if (attempts && Number(attempts) >= MAX_OTP_ATTEMPTS) {
         throw new ApiError(429, `Too many wrong OTP attempts. Try again after 15 minutes.`);
     }
 
 
-    const storedHashedOtp = await redisClient.get(`otp:login:${phone}`);
+    const storedHashedOtp = await redisClient.get(`otp:login:${email}`);
 
     if (!storedHashedOtp) {
         throw new ApiError(400, "OTP has expired or is invalid")
@@ -382,19 +397,21 @@ const verifyLoginOtp = asyncHandler(async (req, res, _) => {
     );
 
     if (!isMatch) {
-        const failed = await redisClient.incr(`otp-attempts:login:${phone}`);
+        const failed = await redisClient.incr(`otp-attempts:login:${email}`);
         if (failed === 1) {
-            await redisClient.expire(`otp-attempts:login:${phone}`, OTP_BLOCK_TIME);
+            await redisClient.expire(`otp-attempts:login:${email}`, OTP_BLOCK_TIME);
         }
 
         throw new ApiError(400, "Invalid OTP");
     }
 
     // OTP is correct → reset failed attempts
-    await redisClient.del(`otp-attempts:login:${phone}`);
-    await redisClient.del(`otp:login:${phone}`);
+    await redisClient.del(`otp-attempts:login:${email}`);
+    await redisClient.del(`otp:login:${email}`);
 
     const token = generateToken(user);
+    // Decide cookie name based on role
+    // const cookieName = user.role === "technician" ? "techToken" : "userToken";
 
     const option = {
         httpOnly: true,
@@ -404,6 +421,7 @@ const verifyLoginOtp = asyncHandler(async (req, res, _) => {
 
     return res.status(200).cookie("token", token, option).json(
         new ApiResponse(200, {
+            user,
             token
         }, "Login successful")
     )
@@ -411,9 +429,9 @@ const verifyLoginOtp = asyncHandler(async (req, res, _) => {
 
 
 const resendOtp = asyncHandler(async (req, res, _) => {
-    const { phone, type } = req.body;
-    if (!phone || !type) {
-        throw new ApiError(400, "Phone number is required")
+    const { email, type } = req.body;
+    if (!email || !type) {
+        throw new ApiError(400, "Email is required")
     }
     if (!["register", "login"].includes(type)) {
         throw new ApiError(400, "Invalid OTP type");
@@ -427,7 +445,7 @@ const resendOtp = asyncHandler(async (req, res, _) => {
     // =========================
     if (type === "login") {
 
-        const user = await User.findOne({ phone });
+        const user = await User.findOne({ email });
         if (!user) throw new ApiError(404, "User not found");
 
         if (user.status === "blocked") {
@@ -436,7 +454,7 @@ const resendOtp = asyncHandler(async (req, res, _) => {
 
         role = user.role;
 
-        const cooldown = await redisClient.get(`otp-cooldown:login:${phone}`);
+        const cooldown = await redisClient.get(`otp-cooldown:login:${email}`);
         if (cooldown) {
             throw new ApiError(429, "Please wait before requesting OTP again");
         }
@@ -444,11 +462,11 @@ const resendOtp = asyncHandler(async (req, res, _) => {
         const otp = crypto.randomInt(100000, 1000000).toString();
         const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
 
-        await redisClient.set(`otp:login:${phone}`, hashedOtp, { ex: 300 });
-        await redisClient.set(`otp-cooldown:login:${phone}`, "1", { ex: 60 });
+        await redisClient.set(`otp:login:${email}`, hashedOtp, { ex: 300 });
+        await redisClient.set(`otp-cooldown:login:${email}`, "1", { ex: 60 });
 
-        console.log(`Login OTP: ${otp}`); // remove in production
-
+        // console.log(`Login OTP: ${otp}`); // remove in production
+        sendOtpEmail(email, otp);
         return res.status(200).json(
             new ApiResponse(200, {}, "Login OTP resent successfully")
         );
@@ -461,11 +479,11 @@ const resendOtp = asyncHandler(async (req, res, _) => {
     if (type === "register") {
 
         // Check which registration session exists
-        let regData = await redisClient.get(`register:user:${phone}`);
+        let regData = await redisClient.get(`register:user:${email}`);
         role = "user";
 
         if (!regData) {
-            regData = await redisClient.get(`register:technician:${phone}`);
+            regData = await redisClient.get(`register:technician:${email}`);
             role = "technician";
         }
 
@@ -473,7 +491,7 @@ const resendOtp = asyncHandler(async (req, res, _) => {
             throw new ApiError(400, "Registration session expired. Please register again.");
         }
 
-        const cooldown = await redisClient.get(`otp-cooldown:${role}:${phone}`);
+        const cooldown = await redisClient.get(`otp-cooldown:${role}:${email}`);
         if (cooldown) {
             throw new ApiError(429, "Please wait before requesting OTP again");
         }
@@ -481,11 +499,11 @@ const resendOtp = asyncHandler(async (req, res, _) => {
         const otp = crypto.randomInt(100000, 1000000).toString();
         const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
 
-        await redisClient.set(`otp:${role}:${phone}`, hashedOtp, { ex: 300 });
-        await redisClient.set(`otp-cooldown:${role}:${phone}`, "1", { ex: 60 });
+        await redisClient.set(`otp:${role}:${email}`, hashedOtp, { ex: 300 });
+        await redisClient.set(`otp-cooldown:${role}:${email}`, "1", { ex: 60 });
 
-        console.log(`Register OTP: ${otp}`); // remove in production
-
+        // console.log(`Register OTP: ${otp}`); // remove in production
+      sendOtpEmail(email, otp);
         return res.status(200).json(
             new ApiResponse(200, {}, "Registration OTP resent successfully")
         );
@@ -504,7 +522,7 @@ const logout = asyncHandler(async (req, res, _) => {
     res.clearCookie("token", option);
 
     return res.status(200).json(
-        new ApiResponse(200, {}, "Logged out successfully")
+        new ApiResponse(200, {}, "Logout successfully")
     );
 });
 

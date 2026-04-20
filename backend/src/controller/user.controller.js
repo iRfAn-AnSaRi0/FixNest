@@ -5,7 +5,7 @@ import { ApiResponse } from '../utils/api.response.js';
 
 const getProfile = asyncHandler(async (req, res) => {
 
-     const userData = await User.findById(req.user.id).select("name phone role status");
+    const userData = await User.findById(req.user.id).select("name phone email role status technicianType fullAddress city state pincode ");
 
     if (!userData) {
         throw new ApiError(401, "Unauthorized");
@@ -19,70 +19,61 @@ const getProfile = asyncHandler(async (req, res) => {
                 {
                     name: userData.name,
                     phone: userData.phone,
+                    email: userData.email,
+                    role: userData.role,
                 },
                 "User profile fetched successfully"
             )
         );
     }
 
-    // 🧑‍🔧 TECHNICIAN PROFILE
     if (userData.role === "technician") {
 
-        const basicTechProfile = {
+        const baseProfile = {
+            id: userData._id,
             name: userData.name,
             phone: userData.phone,
-            status: userData.status
+            role: userData.role,
+            status: userData.status,
+            technicianType: userData.technicianType || null,
         };
 
-        if (userData.status === "pending") {
-            return res.status(200).json(
-                new ApiResponse(
-                    200,
-                    basicTechProfile,
-                    "Technician profile is pending"
-                )
-            );
-        }
+  // 🟡 Pending / Rejected
+  if (userData.status === "pending" || userData.status === "rejected") {
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          user: baseProfile,
+          access: "limited", // 🔥 KEY
+        },
+        `Technician profile is ${userData.status}`
+      )
+    );
+  }
 
-        if (userData.status === "rejected") {
-            return res.status(200).json(
-                new ApiResponse(
-                    200,
-                    basicTechProfile,
-                    "Technician profile is rejected"
-                )
-            );
-        }
+  // 🟢 Approved
+  const maskedId = userData.idProofNumber
+    ? userData.idProofNumber.slice(-4).padStart(userData.idProofNumber.length, "X")
+    : null;
 
-        // Mask ID number for security
-        const maskedId = user.idProofNumber
-            ? user.idProofNumber.slice(-4).padStart(user.idProofNumber.length, "X")
-            : null;
-
-        return res.status(200).json(
-            new ApiResponse(
-                200,
-                {
-                    id: user._id,
-                    name: user.name,
-                    phone: user.phone,
-                    technicianType: user.technicianType,
-                    experience: user.experience,
-                    idProofType: user.idProofType,
-                    idProofNumber: maskedId,
-                    idProofImage: user.idProofImage,
-                    fullAddress: user.fullAddress,
-                    city: user.city,
-                    state: user.state,
-                    pincode: user.pincode,
-                    status: user.status,
-                    isVerified: userData.isVerified,
-                    createdAt: userData.createdAt
-                },
-                "Technician profile fetched successfully"
-            )
-        );
-    }
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        user: {
+          ...baseProfile,
+          fullAddress: userData.fullAddress,
+          city: userData.city,
+          state: userData.state,
+          pincode: userData.pincode,
+        },
+        access: "full",
+      },
+      "Technician profile fetched successfully"
+    )
+  );
+}
 
     throw new ApiError(403, "Invalid role");
 
@@ -145,6 +136,11 @@ const updateProfile = asyncHandler(async (req, res) => {
             {
                 id: user._id,
                 name: user.name,
+                phone: user.phone,
+                fullAddress: user.fullAddress,
+                city: user.city,
+                state: user.state,
+                pincode: user.pincode
             },
             "Profile updated successfully"
         )
