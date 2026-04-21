@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import AuthModal from "../auth/AuthModel";
-import SidebarModel from "../ui/SideBarModel";
+import SidebarModel from "../ui/SidebarModel";
 import UpdateProfileForm from "../auth/UpdateNameAndPhone";
 import { useAuth } from "../../context/AuthContext";
 import Model from "../ui/Model"
