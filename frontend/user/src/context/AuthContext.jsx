@@ -9,8 +9,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [openAuth, setOpenAuth] = useState(false);
-    const [authType, setAuthType] = useState("login");
+    // const [openAuth, setOpenAuth] = useState(false);
+    // const [authType, setAuthType] = useState("login");
     const [redirectData, setRedirectData] = useState(null);
     const [accessDenied, setAccessDenied] = useState(false);
     const navigate = useNavigate();
@@ -65,10 +65,8 @@ export const AuthProvider = ({ children }) => {
     };
     return (
         <AuthContext.Provider value={{
-            user, setUser, loading, logout, openAuth,
-            setOpenAuth,
-            authType,
-            setAuthType,
+             user, setUser, loading, logout,
+            // setOpenAuth,  openAuth, authType, setAuthType,
             redirectData,
             setRedirectData,
             accessDenied,

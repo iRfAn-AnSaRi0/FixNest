@@ -10,6 +10,7 @@ import { checkBlockedPhone } from '../utils/checkBlockedPhone.js';
 import { sendOtpEmail } from "../utils/sendOtp.js";
 
 const MAX_OTP_ATTEMPTS = 5;
+const MAX_OTP_ATTEMPTS_RESEND = 3;
 const OTP_BLOCK_TIME = 15 * 60;
 
 const generateToken = (user) => {
@@ -47,10 +48,31 @@ const registerUser = asyncHandler(async (req, res, _) => {
         throw new ApiError(400, "User with this phone & email number already exists");
     }
 
-    const cooldown = await redisClient.get(`otp-cooldown:${email}`);
+    const cooldown = await redisClient.get(`otp-cooldown:user:${email}`);
     if (cooldown) {
         throw new ApiError(429, "Please wait before requesting OTP again");
     }
+
+    const type = "register";
+    const attemptsKey = `otp-attempts:${type}:${email}`;
+    const blockKey = `otp-block:${type}:${email}`;
+
+    const isBlocked = await redisClient.get(blockKey);
+
+    if (isBlocked) {
+        throw new ApiError(429, "Too many OTP requests. Try again after 15 minutes.");
+    }
+
+    let attempts = await redisClient.get(attemptsKey);
+    attempts = attempts ? parseInt(attempts) : 0;
+
+    if (attempts > MAX_OTP_ATTEMPTS_RESEND) {
+        await redisClient.set(blockKey, "1", { ex: OTP_BLOCK_TIME })
+        await redisClient.del(attemptsKey);
+        throw new ApiError(403, "Too many OTP requests. Try again after 15 minutes.");
+    }
+
+    await redisClient.set(attemptsKey, attempts + 1, { ex: OTP_BLOCK_TIME })
 
     const role = "user";
 
@@ -279,8 +301,13 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
     await user.save();
 
     // Clean up Redis
+    // await redisClient.del(`otp:${role}:${email}`);
+    // await redisClient.del(`otp-attempts:${role}:${email}`);
+    // await redisClient.del(`otp-block:register:${email}`);
+
     await redisClient.del(`otp:${role}:${email}`);
     await redisClient.del(`otp-attempts:${role}:${email}`);
+    await redisClient.del(`otp-block:${role}:${email}`);
     await redisClient.del(regDataKey);
 
     const token = generateToken(user);
@@ -333,6 +360,28 @@ const login = asyncHandler(async (req, res, _) => {
     if (cooldown) {
         throw new ApiError(429, "Please wait before requesting OTP again");
     }
+
+
+    const type = "login";
+    const attemptsKey = `otp-attempts:${type}:${email}`;
+    const blockKey = `otp-block:${type}:${email}`;
+
+    const isBlocked = await redisClient.get(blockKey);
+
+    if (isBlocked) {
+        throw new ApiError(429, "Too many OTP requests. Try again after 15 minutes.");
+    }
+
+    let attempts = await redisClient.get(attemptsKey);
+    attempts = attempts ? parseInt(attempts) : 0;
+
+    if (attempts > MAX_OTP_ATTEMPTS_RESEND) {
+        await redisClient.set(blockKey, "1", { ex: OTP_BLOCK_TIME })
+        await redisClient.del(attemptsKey);
+        throw new ApiError(403, "Too many OTP requests. Try again after 15 minutes.");
+    }
+
+    await redisClient.set(attemptsKey, attempts + 1, { ex: OTP_BLOCK_TIME })
 
 
     const otp = crypto.randomInt(100000, 1000000).toString();
@@ -406,8 +455,13 @@ const verifyLoginOtp = asyncHandler(async (req, res, _) => {
     }
 
     // OTP is correct → reset failed attempts
-    await redisClient.del(`otp-attempts:login:${email}`);
+    // await redisClient.del(`otp-attempts:login:${email}`);
+    // await redisClient.del(`otp:login:${email}`);
+    // await redisClient.del(`otp-block:login:${email}`);
+
     await redisClient.del(`otp:login:${email}`);
+    await redisClient.del(`otp-attempts:login:${email}`);
+    await redisClient.del(`otp-block:login:${email}`);
 
     const token = generateToken(user);
     // Decide cookie name based on role
@@ -459,6 +513,32 @@ const resendOtp = asyncHandler(async (req, res, _) => {
             throw new ApiError(429, "Please wait before requesting OTP again");
         }
 
+        const requestKey = `otp-requests:login:${email}`;
+        const blockKey = `otp-block:login:${email}`;
+
+        // Check block
+        const isBlocked = await redisClient.get(blockKey);
+        if (isBlocked) {
+            throw new ApiError(429, "Too many OTP requests. Try again after 15 minutes.");
+        }
+
+        // Count requests
+        let requests = await redisClient.get(requestKey);
+        requests = requests ? parseInt(requests) : 0;
+
+        // If exceeded → block
+        if (requests > MAX_OTP_ATTEMPTS_RESEND) {
+            await redisClient.set(blockKey, "1", { ex: OTP_BLOCK_TIME });
+            await redisClient.del(requestKey);
+
+            throw new ApiError(429, "Too many OTP requests. Blocked for 15 minutes.");
+        }
+
+        // Increment
+        await redisClient.set(requestKey, requests + 1, { ex: OTP_BLOCK_TIME });
+
+
+
         const otp = crypto.randomInt(100000, 1000000).toString();
         const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
 
@@ -496,6 +576,30 @@ const resendOtp = asyncHandler(async (req, res, _) => {
             throw new ApiError(429, "Please wait before requesting OTP again");
         }
 
+        const requestKey = `otp-requests:${role}:${email}`;
+        const blockKey = `otp-block:${role}:${email}`;
+
+        // Check block
+        const isBlocked = await redisClient.get(blockKey);
+        if (isBlocked) {
+            throw new ApiError(429, "Too many OTP requests. Try again after 15 minutes.");
+        }
+
+        // Count requests
+        let requests = await redisClient.get(requestKey);
+        requests = requests ? parseInt(requests) : 0;
+
+        // If exceeded → block
+        if (requests > MAX_OTP_ATTEMPTS_RESEND) {
+            await redisClient.set(blockKey, "1", { ex: OTP_BLOCK_TIME });
+            await redisClient.del(requestKey);
+
+            throw new ApiError(429, "Too many OTP requests. Blocked for 15 minutes.");
+        }
+
+        // Increment
+        await redisClient.set(requestKey, requests + 1, { ex: OTP_BLOCK_TIME });
+
         const otp = crypto.randomInt(100000, 1000000).toString();
         const hashedOtp = crypto.createHash("sha256").update(otp).digest("hex");
 
@@ -503,7 +607,7 @@ const resendOtp = asyncHandler(async (req, res, _) => {
         await redisClient.set(`otp-cooldown:${role}:${email}`, "1", { ex: 60 });
 
         // console.log(`Register OTP: ${otp}`); // remove in production
-      sendOtpEmail(email, otp);
+        sendOtpEmail(email, otp);
         return res.status(200).json(
             new ApiResponse(200, {}, "Registration OTP resent successfully")
         );

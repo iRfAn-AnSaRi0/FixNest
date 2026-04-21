@@ -14,9 +14,6 @@ const AvatarDropdown = () => {
   const [showModal, setShowModal] = useState(false);
   const [formType, setFormType] = useState(""); // "name" | "phone"
   const menuRef = useRef();
-  
-
-  const navigate = useNavigate();
 
   // 🔥 close on outside click
   useEffect(() => {
@@ -43,7 +40,7 @@ const AvatarDropdown = () => {
   };
 
   return (
-    <div className="relative" ref={menuRef}>
+    <div className="relative hidden lg:block" ref={menuRef}>
 
       {/* 🔹 AVATAR */}
       <div

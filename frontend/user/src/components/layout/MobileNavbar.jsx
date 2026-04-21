@@ -10,12 +10,12 @@ import Avatar from "react-avatar";
 
 const MobileNavbar = ({ isOpen, setIsOpen }) => {
 
-  // const [openAuth, setOpenAuth] = useState(false);
-  // const [authType, setAuthType] = useState("login")
+   const [openAuth, setOpenAuth] = useState(false);
+   const [authType, setAuthType] = useState("login")
   const [openSetting, setOpenSetting] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formType, setFormType] = useState("name");
-  const { user, logout, loading, openAuth, setOpenAuth, authType, setAuthType } = useAuth();
+  const { user, logout, loading } = useAuth();
 
   const handleCloseSidebar = () => {
     setIsOpen(false);
@@ -140,18 +140,18 @@ const MobileNavbar = ({ isOpen, setIsOpen }) => {
 
           {user ? (
             <>
-              <Button variant="accent" onClick={logout}>
+              <Button variant="accent" onClick={()=>{ logout(); setIsOpen(false); }}>
                 Logout
               </Button>
             </>
           ) : (
             <>
 
-              <Button variant="accent" onClick={() => { setOpenAuth(true), setAuthType("signup") }}>
+              <Button variant="accent" onClick={() => { setIsOpen(false), setOpenAuth(true), setAuthType("register") }}>
                 Get Started
               </Button>
 
-              <Button variant="outline" className="mt-[-15px]" onClick={() => { setOpenAuth(true), setAuthType("login") }}>
+              <Button variant="outline" className="mt-[-15px]" onClick={() => { setIsOpen(false), setOpenAuth(true), setAuthType("login") }}>
                 Sign in
               </Button>
             </>

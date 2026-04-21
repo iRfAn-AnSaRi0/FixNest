@@ -10,10 +10,10 @@ import AvatarDropdown from "./AvatarDropdown";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  // const [openAuth, setOpenAuth] = useState(false);
-  // const [authType, setAuthType] = useState("login")
+   const [openAuth, setOpenAuth] = useState(false);
+   const [authType, setAuthType] = useState("login")
 
-const { user, loading, openAuth, setOpenAuth, authType, setAuthType } = useAuth();
+const { user, loading } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {

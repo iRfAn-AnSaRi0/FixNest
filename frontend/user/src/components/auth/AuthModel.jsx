@@ -9,7 +9,8 @@ const AuthModal = ({ open, onClose, initialStep }) => {
   const [email, setEmail] = useState("");
   const [authType, setAuthType] = useState(initialStep);
 
-
+ console.log(initialStep);
+ 
   useEffect(() => {
     if (open) {
       setStep(initialStep);
