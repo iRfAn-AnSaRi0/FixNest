@@ -1,4 +1,4 @@
-import SidebarModel from "../ui/SideBarModel";
+import SidebarModel from "../ui/SidebarModel";
 import { adminAuth } from "../../context/AuthContext";
 import Button from "../ui/Button"
 import Avatar from "react-avatar";
