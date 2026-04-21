@@ -115,7 +115,7 @@ const { user, loading } = useAuth();
           )}
 
           <button
-            className="lg:hidden text-3xl"
+            className="lg:hidden text-4xl"
             onClick={() => setMenuOpen(true)}
           >
             ☰

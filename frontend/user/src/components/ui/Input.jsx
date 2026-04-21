@@ -20,7 +20,7 @@ const Input = ({
         placeholder=" "
         className="
           peer w-full h-12 px-3 pt-5 pb-2
-          text-sm text-text
+          text-base text-text
           bg-transparent
           border border-border rounded-lg
           outline-none transition-all
