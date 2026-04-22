@@ -115,7 +115,7 @@ const ServicesPage = () => {
                     placeholder="Search services..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full h-11 pl-10 pr-3 border border-border rounded-lg text-sm focus:outline-none focus:border-primary"
+                    className="w-full h-11 pl-10 pr-3 border border-border rounded-lg text-base focus:outline-none focus:border-primary"
                   />
 
                   {/* SEARCH ICON */}

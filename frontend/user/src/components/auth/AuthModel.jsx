@@ -3,14 +3,16 @@ import Model from "../ui/Model";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import OtpForm from "./OtpForm";
+import { useAuth } from "../../context/AuthContext";
 
 const AuthModal = ({ open, onClose, initialStep }) => {
   const [step, setStep] = useState(initialStep);
   const [email, setEmail] = useState("");
-  const [authType, setAuthType] = useState(initialStep);
+  // const [authType, setAuthType] = useState(initialStep);
 
- console.log(initialStep);
- 
+  const { authType, setAuthType} = useAuth();
+
+
   useEffect(() => {
     if (open) {
       setStep(initialStep);
@@ -42,6 +44,7 @@ const AuthModal = ({ open, onClose, initialStep }) => {
           switchToSignup={() => {
             setAuthType("register");
             setStep("register");
+
           }}
           initialStep={step}
         />
@@ -51,9 +54,9 @@ const AuthModal = ({ open, onClose, initialStep }) => {
         <SignupForm
           onClose={onClose}
           onSubmit={handleSignup}
-          switchToLogin={() =>{
+          switchToLogin={() => {
             setAuthType("login")
-             setStep("login")
+            setStep("login")
           }}
           initialStep={step}
         />

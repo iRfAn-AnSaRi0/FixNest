@@ -10,10 +10,10 @@ import AvatarDropdown from "./AvatarDropdown";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-   const [openAuth, setOpenAuth] = useState(false);
-   const [authType, setAuthType] = useState("login")
+  //  const [openAuth, setOpenAuth] = useState(false);
+  //  const [authType, setAuthType] = useState("login")
 
-const { user, loading } = useAuth();
+const { user, loading, authType, setAuthType, openAuth, setOpenAuth } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -97,6 +97,8 @@ const { user, loading } = useAuth();
                 onClick={() => {
                   setAuthType("login");
                   setOpenAuth(true);
+                  console.log(authType);
+                  
                 }}
               >
                 Sign in
@@ -107,6 +109,8 @@ const { user, loading } = useAuth();
                 onClick={() => {
                   setAuthType("register");
                   setOpenAuth(true);
+                  console.log(authType);
+                  
                 }}
               >
                 Get Started
