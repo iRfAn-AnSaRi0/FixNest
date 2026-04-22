@@ -39,7 +39,7 @@ const adminLogin = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("token", token, options)
+    .cookie("token", token, option)
     .json(
       new ApiResponse(
         200,
