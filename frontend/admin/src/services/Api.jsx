@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const baseApi = axios.create({
-    // baseURL: "http://localhost:8080/api/admin",
-    baseURL: "https://fixnest-6t18.onrender.com/api/admin",
+    // baseURL: import.meta.env.VITE_TRIAL_URI,
+    baseURL: import.meta.env.VITE_API_URL,
     withCredentials: true
 })
 
