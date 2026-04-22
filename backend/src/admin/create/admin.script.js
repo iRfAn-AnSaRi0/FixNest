@@ -3,11 +3,11 @@ import { User } from "../../models/user.model.js";
 
 const createAdmin = async () => {
 
-    const hashedPassword = await bcrypt.hash("SuperSecure@123", 10);
+    const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
 
     await User.create({
         name: "Super Admin",
-        phone: "8392092388",
+        phone: process.env.ADMIN_PHONE,
         password: hashedPassword,
         role: "admin",
         isVerified: true
