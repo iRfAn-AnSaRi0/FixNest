@@ -318,7 +318,7 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
     const option = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "none",
     }
 
     return res.status(200).cookie("token", token, option).json(
@@ -470,7 +470,7 @@ const verifyLoginOtp = asyncHandler(async (req, res, _) => {
     const option = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "none",
     }
 
     return res.status(200).cookie("token", token, option).json(
