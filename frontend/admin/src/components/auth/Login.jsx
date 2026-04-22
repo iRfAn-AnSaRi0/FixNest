@@ -29,8 +29,9 @@ const Login = ({ onClose }) => {
       console.log(res.data.data);
 
       // ✅ Set user (optional if /me is used)
+      localStorage.setItem("token", res.data.data.token)
       setUser(res.data.data);
-
+       
       toast.success(res.data.message || "Login successful");
 
       onClose(); // ✅ close modal

@@ -59,6 +59,7 @@ const OtpForm = ({ email, onResend, onBack, onClose, initialStep }) => {
                 if (res.data.statusCode === 200) {
                     toast.success(res.data.message);
                     setUser(res.data.data.user);
+                     localStorage.setItem("token", res.data.data.token);
                     onClose();
                     if (redirectData && redirectData.path) {
                         navigate(redirectData.path, {
@@ -84,6 +85,7 @@ const OtpForm = ({ email, onResend, onBack, onClose, initialStep }) => {
 
                     setAccessDenied(false); // 🔥 IMPORTANT
                     setUser(user);
+                    localStorage.setItem("token", res.data.data.token);
                     onClose();
                     if (redirectData && redirectData.path) {
                         navigate(redirectData.path, {

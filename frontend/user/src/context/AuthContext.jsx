@@ -59,6 +59,7 @@ export const AuthProvider = ({ children }) => {
 
             toast.success(res.data.message);
             setUser(null);
+             localStorage.removeItem("token");
             navigate("/"); // 🔥 clear user from state
         } catch (error) {
             //    console.error("Logout error:", error);

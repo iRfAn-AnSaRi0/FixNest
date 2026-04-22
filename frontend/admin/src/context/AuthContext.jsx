@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const res =  await baseApi.post("/logout");
             console.log(res.data);
+            localStorage.removeItem("token")
             setUser(null);
         } catch (error) {
              console.error("Error logging out:", error);
