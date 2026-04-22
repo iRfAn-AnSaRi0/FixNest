@@ -314,11 +314,12 @@ const verifyOtp = asyncHandler(async (req, res, _) => {
     // console.log(token);
 
     // const cookieName = user.role === "technician" ? "techToken" : "userToken";
+    const isProduction = process.env.NODE_ENV === "production";
 
     const option = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     }
 
     return res.status(200).cookie("token", token, option).json(
@@ -467,10 +468,12 @@ const verifyLoginOtp = asyncHandler(async (req, res, _) => {
     // Decide cookie name based on role
     // const cookieName = user.role === "technician" ? "techToken" : "userToken";
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     const option = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "none",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     }
 
     return res.status(200).cookie("token", token, option).json(

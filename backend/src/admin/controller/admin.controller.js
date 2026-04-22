@@ -29,11 +29,13 @@ const adminLogin = asyncHandler(async (req, res) => {
 
   const token = generateToken(admin);
 
-  const options = {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const option = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
-  };
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+  }
 
   return res
     .status(200)
@@ -598,19 +600,19 @@ const updateBookingStatus = asyncHandler(async (req, res) => {
   */
   if (status === "completed") {
 
-  const companyProfit = booking.totalPrice * 0.10;
+    const companyProfit = booking.totalPrice * 0.10;
 
-  booking.companyProfit = companyProfit;
-  booking.completedAt = new Date();
+    booking.companyProfit = companyProfit;
+    booking.completedAt = new Date();
 
-  await booking.save();
+    await booking.save();
 
-  await Transaction.create({
-    booking: booking._id,
-    totalAmount: booking.totalPrice,
-    companyProfit
-  });
-}
+    await Transaction.create({
+      booking: booking._id,
+      totalAmount: booking.totalPrice,
+      companyProfit
+    });
+  }
 
   /*
     UPDATE STATUS
