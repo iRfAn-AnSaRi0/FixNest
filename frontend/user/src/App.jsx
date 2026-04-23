@@ -37,7 +37,7 @@ function App() {
   }, []);
 
   if (loading) {
-    return null; // or loader
+    return <FixNestLoader/>; // or loader
   }
 
   return (
