@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { lazy } from "react";
 
 // PAGES
 const Home = lazy(() => import("../pages/Home/Home"));
@@ -20,7 +20,6 @@ const AppRoutes = ({ categories, loading }) => {
 
   return (
 
-    <Suspense fallback={<div className="p-4">Loading..</div>}>
 
       <Routes>
 
@@ -45,7 +44,6 @@ const AppRoutes = ({ categories, loading }) => {
 
 
       </Routes>
-    </Suspense>
   );
 };
 

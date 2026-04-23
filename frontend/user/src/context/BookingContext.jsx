@@ -17,7 +17,7 @@ export const BookingProvider = ({ children }) => {
         setLoading(true);
         try {
             const res = await getCurrentBooking();
-            console.log(res.data.data);
+            // console.log(res.data.data);
 
             setCurrentBooking(res.data.data); // ✅ fix
         } catch (error) {
