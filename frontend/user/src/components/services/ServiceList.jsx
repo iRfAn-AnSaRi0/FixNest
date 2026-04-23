@@ -27,9 +27,8 @@ const ServiceList = () => {
 
         setService(data)
 
-        setTimeout(() => {
           setLoading(false);
-        }, 600);
+       
 
       } catch (error) {
         console.error(error);

@@ -25,11 +25,7 @@ const ServicesPage = () => {
         const data = res?.data?.data || [];
         setService(data);
 
-        // small delay (so skeleton visible)
-        setTimeout(() => {
-          setLoading(false);
-        }, 600);
-
+       setLoading(false); 
 
       } catch (error) {
         console.error(error);

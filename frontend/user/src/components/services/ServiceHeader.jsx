@@ -21,9 +21,9 @@ const ServiceHeader = () => {
       setCategory(res?.data?.data?.category || {});
       setServiceCount(res?.data?.data?.serviceCount || 0);
 
-      setTimeout(() => {
+      
         setLoading(false);
-      }, 600); // smooth UX
+      // smooth UX
 
     } catch (error) {
       console.error(error);
