@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
+import FixNestLoader from "../components/ui/FixNestLoader";
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading, setOpenAuth, setAuthType } = useAuth();
@@ -11,7 +12,7 @@ const ProtectedRoute = ({ children }) => {
     }
   }, [user, loading]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <FixNestLoader/>;
 
   if (!user) return null; // 👈 don't render page
 

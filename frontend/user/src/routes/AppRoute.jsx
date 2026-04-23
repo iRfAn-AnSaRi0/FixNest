@@ -2,7 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { lazy } from "react";
 
 // PAGES
-const Home = lazy(() => import("../pages/Home/Home"));
+import Home from "../pages/Home/Home"
+import ProtectedRoute from "../context/ProtectedRoute"
 const ServicePage = lazy(() => import("../pages/Services/ServicesPage"));
 const ServicesCategoryPage = lazy(() => import("../pages/Services/ServicesCategoryPage"));
 const HowItWorksPage = lazy(() => import("../pages/How-it-works/HowItWorksPage"));
@@ -14,7 +15,6 @@ const PrivacyPolicyPage = lazy(() => import("../pages/Terms-Conditions/PrivacyPo
 const TermsPage = lazy(() => import("../pages/Terms-Conditions/TermsPage"));
 const BookingPage = lazy(() => import("../pages/Booking/BookingPage"));
 const CurrentBookingAndHistory = lazy(() => import("../pages/Booking/CurrentBookingAndHistory"));
-const ProtectedRoute = lazy(()=>import("../context/ProtectedRoute"))
 
 const AppRoutes = ({ categories, loading }) => {
 

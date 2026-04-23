@@ -21,7 +21,8 @@ export const BookingProvider = ({ children }) => {
 
             setCurrentBooking(res.data.data); // ✅ fix
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            throw error
         } finally {
             setLoading(false);
         }
@@ -47,7 +48,8 @@ export const BookingProvider = ({ children }) => {
             });
 
         } catch (error) {
-            console.error(error);
+            // console.error(error);
+            throw error
         } finally {
             setLoading(false);
         }
@@ -68,7 +70,7 @@ export const BookingProvider = ({ children }) => {
 
         } catch (error) {
 
-            console.log("CONTEXT ERROR:", error.response?.data);
+            // console.log("CONTEXT ERROR:", error.response?.data);
             throw error; // ✅ VERY IMPORTANT
 
         }
