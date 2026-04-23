@@ -109,7 +109,7 @@ const registerUser = asyncHandler(async (req, res, _) => {
     await sendOtpEmail(email, otp);
 
     return res.status(201).json(
-        new ApiResponse(201, { otp }, "OTP sent successfully")
+        new ApiResponse(201, "OTP sent successfully")
     );
 
 })
@@ -400,7 +400,7 @@ const login = asyncHandler(async (req, res, _) => {
     // console.log(`OTP for ${email}: ${hashedOtp} (original: ${otp})`); // In production, send this OTP via SMS
     await sendOtpEmail(email, otp);
     return res.status(200).json(
-        new ApiResponse(200, { otp }, "OTP sent successfully")
+        new ApiResponse(200, "OTP sent successfully")
     );
 })
 
