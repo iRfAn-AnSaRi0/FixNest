@@ -51,7 +51,7 @@ function App() {
           <Toaster position="top-right" reverseOrder={false} />
           <ScrollToTop />
           <Navbar />
-          <AppRoutes categories={categories} loading={loading} />
+          <AppRoutes categories={categories} loading={load} />
           <Footer categories={categories} />
           </Suspense>
         </>
