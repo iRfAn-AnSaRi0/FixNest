@@ -78,11 +78,13 @@ const adminProfile = asyncHandler(async (req, res) => {
 
 const adminLogout = asyncHandler(async (req, res, _) => {
 
-  const options = {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  const option = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict"
-  };
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+  }
 
   return res
     .status(200)
