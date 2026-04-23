@@ -49,22 +49,29 @@ const CurrentBookingAndHistory = () => {
   // };
 
   const confirmCancelBooking = async () => {
-  if (!selectedId) return;
+    if (!selectedId) return;
+    try {
+      const res = await cancelBookingApi(selectedId); // ✅ get response
 
-  try {
-    await cancelBookingApi(selectedId);
+      // ✅ show toast ONLY on success
+      if (res?.data?.statusCode === 200) {
+        toast.success("Booking cancelled successfully ✅");
+      }
 
-    toast.success("Booking cancelled successfully ✅");
+      setShowCancelModal(false);
+      setSelectedId(null);
 
-    setShowCancelModal(false);
-    setSelectedId(null);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+        error.response?.data?.error ||
+        error.response?.data?.errors?.[0] ||
+        "Booking failed"
+      );
 
-  } catch (error) {
-    toast.error(
-      error?.response?.data?.message || "Failed to cancel booking ❌"
-    );
-  }
-};
+      setShowCancelModal(false);
+    }
+  };
 
   // ✅ Select correct data
   const bookings = tab === "current" ? currentBooking : history;
@@ -193,9 +200,15 @@ const CurrentBookingAndHistory = () => {
                       </Button>
                     )}
                   </div>
-                ) : (
+                ) : item.status === "pending" ? (
+                  // ⏳ BEFORE ASSIGN
                   <p className="text-sm text-muted">
                     Technician will be assigned soon
+                  </p>
+                ) : (
+                  // 🚫 AFTER (completed / cancelled / etc.)
+                  <p className="text-sm text-muted">
+                    🚫 Feature not available
                   </p>
                 )}
 
@@ -359,8 +372,16 @@ const CurrentBookingAndHistory = () => {
                         {selectedBooking.technician.phone}
                       </p>
                     </div>
+                  ) : selectedBooking.status === "pending" ? (
+                    // ⏳ BEFORE ASSIGN
+                    <p className="text-sm text-muted">
+                      Technician will be assigned soon
+                    </p>
                   ) : (
-                    <p className="text-muted">(Not assigned yet)</p>
+                    // 🚫 AFTER (completed / cancelled / etc.)
+                    <p className="text-sm text-muted">
+                      🚫 Feature not available
+                    </p>
                   )}
                 </div>
 

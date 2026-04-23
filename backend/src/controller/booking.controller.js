@@ -129,7 +129,6 @@ const cancelBooking = asyncHandler(async (req, res) => {
 
 
     const booking = await Booking.findById(id);
-
     if (!booking) {
         throw new ApiError(404, "Booking not found")
     }

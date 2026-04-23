@@ -35,7 +35,7 @@ const Hero = () => {
             </span>
 
             <span className="px-3 py-1 text-sm border border-border rounded-md bg-background">
-              Cleaning
+              Refrigerator
             </span>
           </div>
 

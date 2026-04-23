@@ -78,6 +78,7 @@ const ServiceList = () => {
                   <img
                     src={services.serviceImage}
                     alt={services.name}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                 </div>
@@ -129,9 +130,9 @@ const ServiceList = () => {
                             state: { services }   // 👈 store service here
                           });
                           setOpenAuth(true);      // 👈 show modal
-                         }else{
+                        } else {
                           navigate(`/booking/${services._id}`, { state: { services } })
-                         }
+                        }
                       }}>
                       Book Now
                     </Button>

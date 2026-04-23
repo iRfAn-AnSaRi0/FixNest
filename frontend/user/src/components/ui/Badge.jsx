@@ -1,7 +1,7 @@
 const Badge = ({ status, children, className = "" }) => {
   const style = {
     pending: "bg-warning/10 text-warning",
-    technician_assigned: "bg-primary-100 text-primary",
+    technician_assigned: "bg-primary/10 text-success",
     accepted: "bg-info/10 text-info",
     in_progress: "bg-primary/10 text-primary",
     completed: "bg-success/10 text-success",

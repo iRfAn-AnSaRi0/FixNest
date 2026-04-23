@@ -64,10 +64,13 @@ export const BookingProvider = ({ children }) => {
             );
             // add to history
             setHistory(prev => [cancelledItem, ...prev]);
-
+            return res; 
 
         } catch (error) {
-            console.error(error);
+
+            console.log("CONTEXT ERROR:", error.response?.data);
+            throw error; // ✅ VERY IMPORTANT
+
         }
     };
 

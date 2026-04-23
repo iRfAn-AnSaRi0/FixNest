@@ -20,9 +20,9 @@ const BookingPage = () => {
     const [quantity, setQuantity] = useState(1);
     const [form, setForm] = useState({
         street: "",
-        city: "",
-        state: "",
-        pincode: "",
+        city: "Gangtok",
+        state: "Sikkim",
+        pincode: "737101",
         problemDescription: "",
         date: "",
         time: ""
@@ -67,6 +67,12 @@ const BookingPage = () => {
 
         setLoading(true);
 
+        const selectedDateTime = new Date(`${form.date}T${form.time}`);
+        if (selectedDateTime < new Date()) {
+            toast.error("⏰ Please select a future time");
+            return;
+        }
+
         try {
 
             const payload = {
@@ -106,9 +112,9 @@ const BookingPage = () => {
                     time: "",
                     problemDescription: "",
                     street: "",
-                    city: "",
-                    state: "",
-                    pincode: ""
+                    city: "Gangtok",
+                    state: "Sikkim",
+                    pincode: "737101"
                 });
 
                 setQuantity(1);
@@ -247,6 +253,10 @@ const BookingPage = () => {
                                 Your Details
                             </h3>
 
+                            <p className="text-sm text-warning">
+                                🚫 Service available only in Gangtok, Sikkim (737101)
+                            </p>
+
                             <Input
                                 label="Street"
                                 value={form.street}
@@ -257,23 +267,23 @@ const BookingPage = () => {
                                 <Input
                                     label="City"
                                     value={form.city}
-                                    disabled={loading}
-                                    onChange={(e) => handleChange("city", e.target.value)}
+                                    disabled
+
                                 />
 
                                 <Input
                                     label="State"
                                     value={form.state}
-                                    disabled={loading}
-                                    onChange={(e) => handleChange("state", e.target.value)}
+                                    disabled
+
                                 />
                             </div>
 
                             <Input
                                 label="Pincode"
                                 value={form.pincode}
-                                disabled={loading}
-                                onChange={(e) => handleChange("pincode", e.target.value)}
+                                disabled
+
                             />
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="relative">
@@ -282,7 +292,11 @@ const BookingPage = () => {
                                         min={today}
                                         disabled={loading}
                                         value={form.date}
-                                        onChange={(e) => handleChange("date", e.target.value)}
+                                        // onChange={(e) => handleChange("date", e.target.value)}
+                                        onChange={(e) => {
+                                            handleChange("date", e.target.value);
+                                            handleChange("time", ""); // reset time
+                                        }}
                                         className="w-full border border-border rounded-lg px-3 pt-5 pb-2 bg-transparent outline-none focus:border-accent  focus:ring-accent"
                                     />
                                     <label className="absolute left-3 top-1 text-xs text-muted">
@@ -291,17 +305,34 @@ const BookingPage = () => {
                                 </div>
 
                                 <div className="relative">
-                                    <input
-                                        type="time"
+
+
+                                    <select
                                         value={form.time}
-                                        disabled={loading}
-                                        min={form.date === today ? currentTime : undefined}
+                                        disabled={loading || !form.date}
                                         onChange={(e) => handleChange("time", e.target.value)}
-                                        className="w-full border border-border rounded-lg px-3 pt-5 pb-2 bg-transparent outline-none focus:border-accent  focus:ring-accent"
-                                    />
-                                    <label className="absolute left-3 top-1 text-xs text-muted">
-                                        Select Time
-                                    </label>
+                                        className="w-full border border-border rounded-lg px-3 py-3 bg-white outline-none focus:border-accent"
+                                    >
+                                        <option value="">Select Time Slot</option>
+                                        {[
+                                            { value: "09:00-13:00", label: "9 AM - 1 PM", start: "09:00", end: "13:00" },
+                                            { value: "13:00-15:00", label: "1 PM - 3 PM", start: "13:00", end: "15:00" },
+                                            { value: "15:00-18:00", label: "3 PM - 6 PM", start: "15:00", end: "18:00" },
+                                        ]
+                                            .filter((slot) => {
+                                                if (form.date !== today) return true;
+
+                                                const now = new Date();
+                                                const slotEnd = new Date(`${form.date}T${slot.end}`);
+
+                                                return slotEnd > now; // ✅ allow ongoing slot
+                                            })
+                                            .map((slot) => (
+                                                <option key={slot.value} value={slot.value}>
+                                                    {slot.label}
+                                                </option>
+                                            ))}
+                                    </select>
                                 </div>
                             </div>
 

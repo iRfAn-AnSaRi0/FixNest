@@ -7,31 +7,30 @@ import { getCategory } from "./services/GetAllCategoryApi";
 import { useState, useEffect } from "react";
 import { useAuth } from "./context/AuthContext";
 import AccessDenied from "./components/ui/AccessDenied";
+import { Suspense } from "react";
+import FixNestLoader from "./components/ui/FixNestLoader";
 
 function App() {
+
+  const { accessDenied, loading } = useAuth();
+
+  //  console.time("FixNestAppLoad");
 
   const [categories, setCategories] = useState([]);
   const [load, setLoad] = useState(true);
 
-  const { accessDenied, loading } = useAuth();
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        setLoad(true)
         const res = await getCategory();
-        const data = res?.data?.data || [];
-        setCategories(data);
+        setCategories(res?.data?.data || []);
 
-        setTimeout(() => {
-          setLoad(false);
-        }, 600);
       } catch (error) {
-        console.error(error)
-        setCategories([]);
+        console.error(error);
+      } finally {
         setLoad(false);
+        // console.timeEnd("FixNestAppLoad");
       }
-
     };
 
     fetchCategories();
@@ -48,12 +47,15 @@ function App() {
         <AccessDenied />
       ) : (
         <>
+        <Suspense  fallback={<FixNestLoader/>}>
           <Toaster position="top-right" reverseOrder={false} />
           <ScrollToTop />
           <Navbar />
           <AppRoutes categories={categories} loading={loading} />
           <Footer categories={categories} />
+          </Suspense>
         </>
+        
       )}
 
     </>

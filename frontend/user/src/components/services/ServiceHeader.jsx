@@ -77,7 +77,7 @@ const ServiceHeader = () => {
 
             {category.categoryImage && (
               <div className="hidden lg:block md:w-[320px] h-[180px] rounded-lg overflow-hidden shadow-sm">
-                <img src={category.categoryImage} alt={category.name} className="w-full h-full object-cover" />
+                <img src={category.categoryImage} alt={category.name}  loading="lazy" className="w-full h-full object-cover" />
               </div>
             )}
 
