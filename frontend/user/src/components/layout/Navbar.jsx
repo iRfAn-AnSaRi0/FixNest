@@ -97,7 +97,7 @@ const { user, loading, authType, setAuthType, openAuth, setOpenAuth } = useAuth(
                 onClick={() => {
                   setAuthType("login");
                   setOpenAuth(true);
-                  console.log(authType);
+                  // console.log(authType);
                   
                 }}
               >
@@ -109,7 +109,7 @@ const { user, loading, authType, setAuthType, openAuth, setOpenAuth } = useAuth(
                 onClick={() => {
                   setAuthType("register");
                   setOpenAuth(true);
-                  console.log(authType);
+                  // console.log(authType);
                   
                 }}
               >
