@@ -619,11 +619,13 @@ const resendOtp = asyncHandler(async (req, res, _) => {
 
 
 const logout = asyncHandler(async (req, res, _) => {
+
+    const isProduction = process.env.NODE_ENV === "production";
+
     const option = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        expires: new Date(0)
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax"
     }
 
     res.clearCookie("token", option);
