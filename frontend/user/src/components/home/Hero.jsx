@@ -19,7 +19,7 @@ const Hero = () => {
           </h1>
 
           <p className="mt-5 text-lg text-muted font-sans">
-            Book trusted electricians, plumbers, cleaners and more — reliable
+            Book trusted electricians, plumbers, Refrigerator and more — reliable
             professionals ready to help.
           </p>
 

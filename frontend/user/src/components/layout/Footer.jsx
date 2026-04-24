@@ -106,7 +106,7 @@ const Footer = ({ categories }) => {
                     <p>© 2026 FixNest. All rights reserved.</p>
 
                     <p className="mt-2">
-                        Privacy Policy | Terms of Service
+                        <Link to="/privacy-policy">Privacy Policy</Link> | <Link to="/terms-conditions">Terms of Service</Link>
                     </p>
 
                 </div>

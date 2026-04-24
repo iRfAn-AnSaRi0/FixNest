@@ -89,7 +89,7 @@ const ContactSupportPage = () => {
                             Support Hours
                         </h3>
                         <p className="text-sm text-muted mt-1">
-                            9 AM – 8 PM (All Days)
+                            9 AM – 6 PM (All Days)
                         </p>
                     </div>
 
