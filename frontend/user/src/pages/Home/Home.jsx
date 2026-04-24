@@ -4,12 +4,14 @@ import ServiceCategories from "../../components/home/ServiceCategories";
 import HowItWorks from "../../components/sections/HowItWorks";
 import WhyChoose from "../../components/sections/WhyChoose";
 import Testimonials from "../../components/sections/Testimonials";
+import { useCategories } from "../../utils/UseCategories";
 
-const Home = ({categories, loading}) => {
+const Home = () => { //{categories, loading}
+   const { data: categories = [], isLoading } = useCategories();
   return (
     <>
       <Hero />
-      <ServiceCategories  categories={categories} loading={loading}/>
+      <ServiceCategories  categories={categories} loading={isLoading}/>
       <HowItWorks />
       <WhyChoose />
       <Testimonials />
