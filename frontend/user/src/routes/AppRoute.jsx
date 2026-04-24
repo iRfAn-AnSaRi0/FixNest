@@ -22,9 +22,9 @@ const AppRoutes = ({ categories, loading }) => {
 
 
       <Routes>
-{/* <Home categories={categories} loading={loading} /> */}
+
         {/* HOME */}
-        <Route path="/" element={<Home/>} /> 
+        <Route path="/" element={<Home categories={categories} loading={loading} />} />
         <Route path="/services" element={<ServicePage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route path="/help" element={<HelpPage />} />
