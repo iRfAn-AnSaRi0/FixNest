@@ -25,10 +25,10 @@ const Footer = ({ categories }) => {
                         </p>
 
                         <div className="flex gap-4 mt-6">
-                            <a href="#" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaFacebookF size={14} /> </a>
-                            <a href="#" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaInstagram size={14} /> </a>
-                            <a href="#" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaTwitter size={14} /> </a>
-                            <a href="#" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaLinkedinIn size={14} /> </a>
+                            <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaFacebookF size={14} /> </Link>
+                            <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaInstagram size={14} /> </Link>
+                            <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaTwitter size={14} /> </Link>
+                            <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaLinkedinIn size={14} /> </Link>
                         </div>
 
                     </div>
