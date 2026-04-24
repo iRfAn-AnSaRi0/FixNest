@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import Container from "../layout/Container";
 import Button from "../ui/Button";
+import img1 from "../../assets/Hero1.png"
+import img2 from "../../assets/Hero2.png"
 
 const Hero = () => {
-  return (
+  return ( //
     <section className="bg-surface pt-8 pb-16">
       <Container className="grid lg:grid-cols-2 gap-12 items-center">
         <div className="max-w-2xl text-center md:text-left">
@@ -55,7 +57,7 @@ const Hero = () => {
         </div>
 
         <div className="hidden lg:flex justify-end">
-          {/* <img src="" alt="home services" className="w-full max-w-lg" /> */}
+          <img src={img1} alt="Hero image" className="transform scale-110"/>
         </div>
       </Container>
     </section>
