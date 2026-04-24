@@ -57,7 +57,7 @@ const Hero = () => {
         </div>
 
         <div className="hidden lg:flex justify-end">
-          <img src={img1} alt="Hero image" className="transform scale-110"/>
+          <img src={img2} alt="Hero image" className="transform scale-110"/>
         </div>
       </Container>
     </section>
