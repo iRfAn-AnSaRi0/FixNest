@@ -31,7 +31,6 @@ function App() {
             <CategoriesProvider>
               <Navbar />
               <AppRoutes />
-
               <Footer />
             </CategoriesProvider>
 

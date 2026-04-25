@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Container from "../layout/Container";
 import Button from "../ui/Button";
-import img2 from "../../assets/Hero2.png"
+import img2 from "../../assets/Hero2.webp"
 
 const Hero = () => {
   return ( //
