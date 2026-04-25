@@ -14,9 +14,9 @@ function App() {
 
   const { accessDenied, loading } = useAuth();
 
-  // if (loading) {
-  //   return <FixNestLoader />; // or loader
-  // }
+   if (loading) {
+     return <FixNestLoader />; // or loader
+   }
 
   return (
     <>
