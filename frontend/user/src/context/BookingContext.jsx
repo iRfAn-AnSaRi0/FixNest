@@ -29,7 +29,7 @@ export const BookingProvider = ({ children }) => {
     };
 
     const fetchHistory = async () => {
-        // setLoading(true);
+         setLoading(true);
         try {
             const res = await getHistory();
 

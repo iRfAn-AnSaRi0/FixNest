@@ -1,9 +1,13 @@
 import Container from "../layout/Container";
 import ServiceCard from "../ui/ServiceCard";
 import CategorySkeletonCard from "../ui/CategorySkeletonCard";
+import { useCategories } from "../../context/CategoryContext";
 
 
-const ServiceCategories = ({ categories, loading }) => {
+const ServiceCategories = () => {
+
+  const {categories, loading} = useCategories()
+
   return (
     <section className="py-20 bg-background">
       <Container>

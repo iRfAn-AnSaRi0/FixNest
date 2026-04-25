@@ -1,9 +1,11 @@
 import Container from "./Container";
-import HowItWorksPage from "../../pages/How-it-works/HowItWorksPage";
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTwitter, FaLinkedinIn } from "react-icons/fa";
+import { useCategories } from "../../context/CategoryContext";
 
-const Footer = ({ categories }) => {
+const Footer = () => {
+
+    const { categories } = useCategories();
 
     return (
         <footer className="bg-text text-gray-400 pt-16 pb-8">

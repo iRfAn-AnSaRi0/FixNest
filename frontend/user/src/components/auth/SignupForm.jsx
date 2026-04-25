@@ -34,7 +34,7 @@ const SignupForm = ({ onClose, switchToLogin, onSubmit }) => {
     try {
       const res = await signup({ name, email, phone })
       // console.log(res.data.message);
-      toast.success(res.data.message);
+      toast.success(res.data.data);
       onSubmit({ name, email, phone }) // 🔥 GO TO OTP
     } catch (error) {
       // console.error(error.response?.data?.message || "Something went wrong")

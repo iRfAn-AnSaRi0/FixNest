@@ -16,34 +16,41 @@ const TermsPage = lazy(() => import("../pages/Terms-Conditions/TermsPage"));
 const BookingPage = lazy(() => import("../pages/Booking/BookingPage"));
 const CurrentBookingAndHistory = lazy(() => import("../pages/Booking/CurrentBookingAndHistory"));
 
-const AppRoutes = ({ categories, loading }) => {
+import { BookingProvider } from "../context/BookingContext.jsx";
+import { CategoriesProvider } from "../context/CategoryContext.jsx";
+
+
+const AppRoutes = () => {
 
   return (
 
 
-      <Routes>
+    <Routes>
 
-        {/* HOME */}
-        <Route path="/" element={<Home categories={categories} loading={loading} />} />
-        <Route path="/services" element={<ServicePage />} />
-        <Route path="/how-it-works" element={<HowItWorksPage />} />
-        <Route path="/help" element={<HelpPage />} />
-        <Route path="/contact" element={<ContactSupportPage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/professionals" element={<ForProfessionalsPage />} />
-        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-        <Route path="/terms-conditions" element={<TermsPage />} />
-        <Route path="/booking/:id" element={<ProtectedRoute>
+      {/* HOME */}
+      <Route path="/" element={<CategoriesProvider><Home /></CategoriesProvider>} />
+      <Route path="/services" element={<ServicePage />} />
+      <Route path="/how-it-works" element={<HowItWorksPage />} />
+      <Route path="/help" element={<HelpPage />} />
+      <Route path="/contact" element={<ContactSupportPage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/professionals" element={<ForProfessionalsPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/terms-conditions" element={<TermsPage />} />
+      <Route path="/booking/:id" element={<ProtectedRoute>
+        <BookingProvider>
           <BookingPage />
-        </ProtectedRoute>} />
-        {/* SERVICES (Dynamic) */}
-        <Route path="/services/:name/:id" element={<ServicesCategoryPage />} />
+        </BookingProvider>
 
-        <Route path="/my-bookings" element={<CurrentBookingAndHistory />} />
+      </ProtectedRoute>} />
+      {/* SERVICES (Dynamic) */}
+      <Route path="/services/:name/:id" element={<ServicesCategoryPage />} />
+
+      <Route path="/my-bookings" element={<CurrentBookingAndHistory />} />
 
 
 
-      </Routes>
+    </Routes>
   );
 };
 

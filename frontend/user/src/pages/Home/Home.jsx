@@ -5,11 +5,11 @@ import HowItWorks from "../../components/sections/HowItWorks";
 import WhyChoose from "../../components/sections/WhyChoose";
 import Testimonials from "../../components/sections/Testimonials";
 
-const Home = ({categories, loading}) => {
+const Home = () => {
   return (
     <>
       <Hero />
-      <ServiceCategories  categories={categories} loading={loading}/>
+      <ServiceCategories/>
       <HowItWorks />
       <WhyChoose />
       <Testimonials />

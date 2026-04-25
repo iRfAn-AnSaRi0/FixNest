@@ -23,7 +23,9 @@ const LoginForm = ({ onClose, switchToSignup, onSubmit }) => {
     try {
       const res = await login({ email })
       // console.log(res.data.message);
-      toast.success(res.data.message);
+      toast.success(res.data.data);
+      console.log(res.data);
+      
       onSubmit(email) // 🔥 GO TO OTP
       // setOtp(res.data.otp) // 🔥 TEMP: show OTP in console for testing
     } catch (error) {
