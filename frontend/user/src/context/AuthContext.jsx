@@ -14,38 +14,48 @@ export const AuthProvider = ({ children }) => {
     const [redirectData, setRedirectData] = useState(null);
     const [accessDenied, setAccessDenied] = useState(false);
     const navigate = useNavigate();
- 
+
+
+    const fetchUser = async () => {
+        try {
+            const res = await baseApi.get("/users/me")
+
+            if (res.data.success) {
+                setUser(res.data.data);
+                // console.log(res.data.data);
+
+            }
+        } catch (error) {
+            // console.log(error.response.status);
+
+            if (error.response?.status === 401) {
+                setUser(null); // ✅ silent
+            }
+            else if (error.response?.status === 403) {
+                setUser(null);
+                setAccessDenied(true);
+                setOpenAuth(false); // 🔥 prevent login modal
+            } else {
+                console.error(error);
+                setUser(null); // only real issues
+            }
+
+        }
+        finally {
+            setLoading(false);
+
+        }
+
+    }
+
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await baseApi.get("/users/me")
 
-                if (res.data.success) {
-                    setUser(res.data.data);
-                    // console.log(res.data.data);
+        const token = localStorage.getItem("token");
 
-                }
-            } catch (error) {
-                // console.log(error.response.status);
-
-                if (error.response?.status === 401) {
-                    setUser(null); // ✅ silent
-                }
-                else if (error.response?.status === 403) {
-                    setUser(null);
-                    setAccessDenied(true);
-                    setOpenAuth(false); // 🔥 prevent login modal
-                } else {
-                    console.error(error);
-                    setUser(null); // only real issues
-                }
-
-            }
-            finally {
-                setLoading(false);
-
-            }
-
+        // ❌ No token → don't call API
+        if (!token) {
+            setLoading(false);
+            return;
         }
         fetchUser();
     }, [])
@@ -59,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
             toast.success(res.data.message);
             setUser(null);
-             localStorage.removeItem("token");
+            localStorage.removeItem("token");
             navigate("/"); // 🔥 clear user from state
         } catch (error) {
             //    console.error("Logout error:", error);

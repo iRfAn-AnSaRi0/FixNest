@@ -17,7 +17,7 @@ const BookingPage = lazy(() => import("../pages/Booking/BookingPage"));
 const CurrentBookingAndHistory = lazy(() => import("../pages/Booking/CurrentBookingAndHistory"));
 
 import { BookingProvider } from "../context/BookingContext.jsx";
-import { CategoriesProvider } from "../context/CategoryContext.jsx";
+
 
 
 const AppRoutes = () => {
@@ -28,7 +28,7 @@ const AppRoutes = () => {
     <Routes>
 
       {/* HOME */}
-      <Route path="/" element={<CategoriesProvider><Home /></CategoriesProvider>} />
+      <Route path="/" element={<Home />} />
       <Route path="/services" element={<ServicePage />} />
       <Route path="/how-it-works" element={<HowItWorksPage />} />
       <Route path="/help" element={<HelpPage />} />

@@ -14,9 +14,9 @@ function App() {
 
   const { accessDenied, loading } = useAuth();
 
-  if (loading) {
-    return <FixNestLoader />; // or loader
-  }
+  // if (loading) {
+  //   return <FixNestLoader />; // or loader
+  // }
 
   return (
     <>
@@ -28,9 +28,10 @@ function App() {
           <Suspense fallback={<FixNestLoader />}>
             <Toaster position="top-right" reverseOrder={false} />
             <ScrollToTop />
-            <Navbar />
-            <AppRoutes />
             <CategoriesProvider>
+              <Navbar />
+              <AppRoutes />
+
               <Footer />
             </CategoriesProvider>
 

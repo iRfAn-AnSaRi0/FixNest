@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import Container from "../layout/Container";
 import Button from "../ui/Button";
-import img1 from "../../assets/Hero1.png"
 import img2 from "../../assets/Hero2.png"
 
 const Hero = () => {
@@ -57,7 +56,7 @@ const Hero = () => {
         </div>
 
         <div className="hidden lg:flex justify-end">
-          <img src={img2} alt="Hero image" className="transform scale-110"/>
+          <img src={img2} alt="Hero image" loading="lazy" className="transform scale-110"/>
         </div>
       </Container>
     </section>
