@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { lazy } from "react";
 
 // PAGES
-import Home from "../pages/Home/Home"
+const Home = lazy(() => import("../pages/Home/Home.jsx"))
 import ProtectedRoute from "../context/ProtectedRoute"
 const ServicePage = lazy(() => import("../pages/Services/ServicesPage"));
 const ServicesCategoryPage = lazy(() => import("../pages/Services/ServicesCategoryPage"));
@@ -46,7 +46,12 @@ const AppRoutes = () => {
       {/* SERVICES (Dynamic) */}
       <Route path="/services/:name/:id" element={<ServicesCategoryPage />} />
 
-      <Route path="/my-bookings" element={<CurrentBookingAndHistory />} />
+      <Route path="/my-bookings" element={
+        <ProtectedRoute>
+          <CurrentBookingAndHistory />
+        </ProtectedRoute>
+
+      } />
 
 
 
