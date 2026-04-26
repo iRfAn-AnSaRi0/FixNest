@@ -8,7 +8,6 @@ import { getOptimizedImage } from "../../utils/getOptimizedImag";
 const ServiceCategories = () => {
 
   const {categories, loading} = useCategories()
-  console.log(categories);
   
 
   return (
