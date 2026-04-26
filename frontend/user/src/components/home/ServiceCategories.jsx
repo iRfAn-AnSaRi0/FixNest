@@ -7,7 +7,7 @@ import { getOptimizedImage } from "../../utils/getOptimizedImag";
 
 const ServiceCategories = () => {
 
-  const {categories, loading} = useCategories()
+  const { categories = [], loading} = useCategories()
 
   return (
     <section className="py-20 bg-background">
