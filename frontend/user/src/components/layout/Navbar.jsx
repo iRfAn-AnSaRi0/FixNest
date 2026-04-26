@@ -119,7 +119,7 @@ const { user, loading, authType, setAuthType, openAuth, setOpenAuth } = useAuth(
           )}
 
           <button
-            className="lg:hidden text-4xl"
+            className="lg:hidden text-2xl"
             onClick={() => setMenuOpen(true)}
           >
             ☰

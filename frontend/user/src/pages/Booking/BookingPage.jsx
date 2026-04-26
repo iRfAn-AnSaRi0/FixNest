@@ -287,7 +287,7 @@ const BookingPage = () => {
                             />
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="relative">
-                                    <input
+                                    {/* <input
                                         type="date"
                                         min={today}
                                         disabled={loading}
@@ -298,6 +298,17 @@ const BookingPage = () => {
                                             handleChange("time", ""); // reset time
                                         }}
                                         className="w-full border border-border rounded-lg px-3 pt-5 pb-2 bg-transparent outline-none focus:border-accent  focus:ring-accent"
+                                    /> */}
+                                    <input
+                                        type="date"
+                                        min={today}
+                                        disabled={loading}
+                                        value={form.date}
+                                        onChange={(e) => {
+                                            handleChange("date", e.target.value);
+                                            handleChange("time", "");
+                                        }}
+                                        className="w-full border border-border rounded-lg px-3 pt-5 pb-2 bg-transparent outline-none focus:border-accent focus:ring-accent"
                                     />
                                     <label className="absolute left-3 top-1 text-xs text-muted">
                                         Select Date
@@ -305,19 +316,18 @@ const BookingPage = () => {
                                 </div>
 
                                 <div className="relative">
-
-
                                     <select
                                         value={form.time}
                                         disabled={loading || !form.date}
                                         onChange={(e) => handleChange("time", e.target.value)}
-                                        className="w-full border border-border rounded-lg px-3 py-3 bg-white outline-none focus:border-accent"
+                                        className="w-full border border-border rounded-lg px-3 pt-5 pb-2 bg-transparent outline-none focus:border-accent focus:ring-accent appearance-none"
                                     >
                                         <option value="">Select Time Slot</option>
+
                                         {[
-                                            { value: "09:00-13:00", label: "9 AM - 1 PM", start: "09:00", end: "13:00" },
-                                            { value: "13:00-15:00", label: "1 PM - 3 PM", start: "13:00", end: "15:00" },
-                                            { value: "15:00-18:00", label: "3 PM - 6 PM", start: "15:00", end: "18:00" },
+                                            { value: "09:00-13:00", label: "9 AM - 1 PM", end: "13:00" },
+                                            { value: "13:00-15:00", label: "1 PM - 3 PM", end: "15:00" },
+                                            { value: "15:00-18:00", label: "3 PM - 6 PM", end: "18:00" },
                                         ]
                                             .filter((slot) => {
                                                 if (form.date !== today) return true;
@@ -325,7 +335,7 @@ const BookingPage = () => {
                                                 const now = new Date();
                                                 const slotEnd = new Date(`${form.date}T${slot.end}`);
 
-                                                return slotEnd > now; // ✅ allow ongoing slot
+                                                return slotEnd > now;
                                             })
                                             .map((slot) => (
                                                 <option key={slot.value} value={slot.value}>
@@ -333,6 +343,10 @@ const BookingPage = () => {
                                                 </option>
                                             ))}
                                     </select>
+
+                                    <label className="absolute left-3 top-1 text-xs text-muted">
+                                        Select Time Slot
+                                    </label>
                                 </div>
                             </div>
 
