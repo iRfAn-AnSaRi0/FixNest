@@ -48,7 +48,9 @@ const AppRoutes = () => {
 
       <Route path="/my-bookings" element={
         <ProtectedRoute>
-          <CurrentBookingAndHistory />
+          <BookingProvider>
+            <CurrentBookingAndHistory />
+          </BookingProvider>
         </ProtectedRoute>
 
       } />
