@@ -8,6 +8,7 @@ import { getServiceByCategory } from "../../services/GetAllServicesApi"
 import ServiceSkeletonCard from "../ui/ServiceSkeletonCard"
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { getOptimizedImage } from "../../utils/getOptimizedImag";
 
 const ServiceList = () => {
   const { name, id } = useParams();
@@ -75,7 +76,7 @@ const ServiceList = () => {
                 {/* IMAGE */}
                 <div className="h-40 overflow-hidden">
                   <img
-                    src={services.serviceImage}
+                    src={getOptimizedImage(services.serviceImage)}
                     alt={services.name}
                     loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"

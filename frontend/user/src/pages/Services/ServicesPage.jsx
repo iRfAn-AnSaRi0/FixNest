@@ -8,6 +8,7 @@ import { getService } from "../../services/GetAllServicesApi";
 import ServiceSkeletonCard from "../../components/ui/ServiceSkeletonCard";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { getOptimizedImage } from "../../utils/getOptimizedImag";
 
 const ServicesPage = () => {
 
@@ -173,7 +174,7 @@ const ServicesPage = () => {
                   {/* IMAGE */}
                   <div className="h-40 overflow-hidden">
                     <img
-                      src={service.serviceImage}
+                      src={getOptimizedImage(service.serviceImage)}
                       alt={service.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                     />
