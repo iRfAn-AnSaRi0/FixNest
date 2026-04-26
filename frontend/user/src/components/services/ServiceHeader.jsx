@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getServiceByCategory } from "../../services/GetAllServicesApi"
 import HeaderSkeleton from "../ui/HeaderSkeleton";
+import { getOptimizedImage } from "../../utils/getOptimizedImag";
 
 const ServiceHeader = () => {
   const { id } = useParams();
   const [category, setCategory] = useState({});
   const [serviceCount, setServiceCount] = useState(0);
   const [loading, setLoading] = useState(true);
+
+  
 
   useEffect(() => {
     const fecthServices = async () => {
@@ -20,6 +23,7 @@ const ServiceHeader = () => {
 
       setCategory(res?.data?.data?.category || {});
       setServiceCount(res?.data?.data?.serviceCount || 0);
+      
 
       
         setLoading(false);
@@ -77,7 +81,7 @@ const ServiceHeader = () => {
 
             {category.categoryImage && (
               <div className="hidden lg:block md:w-[320px] h-[180px] rounded-lg overflow-hidden shadow-sm">
-                <img src={category.categoryImage} alt={category.name}  loading="lazy" className="w-full h-full object-cover" />
+                <img src={getOptimizedImage(category.categoryImage)} alt={category.name}  loading="lazy" className="w-full h-full object-cover" />
               </div>
             )}
 

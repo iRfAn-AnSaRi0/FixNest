@@ -2,6 +2,7 @@ import Container from "../layout/Container";
 import ServiceCard from "../ui/ServiceCard";
 import CategorySkeletonCard from "../ui/CategorySkeletonCard";
 import { useCategories } from "../../context/CategoryContext";
+import { getOptimizedImage } from "../../utils/getOptimizedImag";
 
 
 const ServiceCategories = () => {
@@ -36,7 +37,7 @@ const ServiceCategories = () => {
             categories.map((category, index) => (
               <ServiceCard
                 key={index}
-                image={category.categoryImage}
+                image={getOptimizedImage(category.categoryImage)}
                 title={category.name}
                 description={category.description}
                 servicesCount={category.serviceCount}
