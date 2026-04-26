@@ -172,7 +172,7 @@ const ServicesPage = () => {
                   className="p-xs overflow-hidden group hover:shadow-card transition duration-300 flex flex-col"
                 >
                   {/* IMAGE */}
-                  <div className="h-40 overflow-hidden">
+                  <div className="h-40 rounded-t-md overflow-hidden">
                     <img
                       src={getOptimizedImage(service.serviceImage)}
                       alt={service.name}

@@ -74,12 +74,12 @@ const ServiceList = () => {
               >
 
                 {/* IMAGE */}
-                <div className="h-40 overflow-hidden">
+                <div className="h-40 rounded-t-md overflow-hidden">
                   <img
                     src={getOptimizedImage(services.serviceImage)}
                     alt={services.name}
                     loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105  transition duration-300"
                   />
                 </div>
 
