@@ -12,7 +12,7 @@ const Hero = () => {
             ✔ Verified Professionals • Fast Service
           </div>
 
-          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text leading-tight">
+          <h1 className="font-heading text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text leading-tight">
             Trusted <span className="text-accent">Home Services</span>{" "}
             <br className="hidden md:block" /> At Your Doorstep
           </h1>
