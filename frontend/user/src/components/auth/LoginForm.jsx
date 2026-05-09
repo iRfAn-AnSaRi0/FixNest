@@ -54,7 +54,7 @@ const LoginForm = ({ onClose, switchToSignup, onSubmit }) => {
           Fix<span className="text-accent">Nest</span>
         </h2>
         <p className="text-sm text-muted mt-1">
-          Enter your phone number to continue
+          Enter your email to continue
         </p>
       </div>
 
