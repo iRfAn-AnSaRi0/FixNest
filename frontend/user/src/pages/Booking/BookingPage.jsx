@@ -258,11 +258,11 @@ const BookingPage = () => {
                             </p> */}
 
 <div className="mt-3 bg-warning/10 border border-warning/30 rounded-lg p-3 text-xs text-muted">
-                            <p className="text-sm text-warning">
+                            <p className="text-warning">
                                 🚫 Service available only in Gangtok, Sikkim
                             </p>
 
-                            <p className="text-sm text-warning">
+                            <p className="text-warning">
                                 🚗 Additional travel charge of ₹100–₹200 may apply for locations below Gangtok Bazaar, Burtuk, and Tadong areas.
                             </p>
                             </div>
