@@ -27,8 +27,8 @@ const Footer = () => {
                         </p>
 
                         <div className="flex gap-4 mt-6">
-                            <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaFacebookF size={14} /> </Link>
-                            <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaInstagram size={14} /> </Link>
+                            <Link to="https://www.facebook.com/share/193bmyAMz2/?mibextid=wwXIfr" target="_blank" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaFacebookF size={14} /> </Link>
+                            <Link to="https://www.instagram.com/fixnest_official" target="_blank" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaInstagram size={14} /> </Link>
                             <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaTwitter size={14} /> </Link>
                             <Link to="" className="w-9 h-9 flex items-center justify-center rounded-full bg-white/5 hover:bg-accent hover:text-white transition"> <FaLinkedinIn size={14} /> </Link>
                         </div>
