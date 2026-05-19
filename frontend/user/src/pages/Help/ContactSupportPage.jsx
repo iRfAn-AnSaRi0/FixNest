@@ -70,7 +70,7 @@ const ContactSupportPage = () => {
                         <h3 className="font-heading font-semibold text-text">
                             Call Us
                         </h3>
-                        <p className="text-sm text-muted mt-1">+91 9876543210</p>
+                        <p className="text-sm text-muted mt-1">+91 9876943218</p>
                     </div>
 
                     <div className="p-5 border border-border rounded-xl text-center bg-surface">
@@ -79,7 +79,7 @@ const ContactSupportPage = () => {
                             Email
                         </h3>
                         <p className="text-sm text-muted mt-1">
-                            support@fixnest.com
+                           servicesfixnest@gmail.com
                         </p>
                     </div>
 

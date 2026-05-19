@@ -148,7 +148,7 @@ const TermsPage = () => {
                             </p>
 
                             <p className="text-sm text-primary mt-2 font-medium">
-                                support@fixnest.com
+                                 servicesfixnest@gmail.com
                             </p>
                         </div>
 

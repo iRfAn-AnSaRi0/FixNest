@@ -148,7 +148,7 @@ const PrivacyPolicyPage = () => {
               </p>
 
               <p className="text-sm font-sans text-primary mt-2 font-medium">
-                support@fixnest.com
+                 servicesfixnest@gmail.com
               </p>
             </div>
 
