@@ -6,6 +6,7 @@ import { getServiceByCategory } from "../../services/GetAllServicesApi";
 import HeaderSkeleton from "../ui/HeaderSkeleton";
 import { getOptimizedImage } from "../../utils/getOptimizedImag";
 import { useCategories } from "../../context/CategoryContext";
+import { Helmet } from 'react-helmet-async';
 
 const ServiceHeader = () => {
   const { id } = useParams();
@@ -55,6 +56,22 @@ const ServiceHeader = () => {
   return (
     <>
       <section className="bg-surface py-8 md:py-12 border-b border-border">
+        <Helmet>
+          <title>
+            {category?.name
+              ? `${category.name} Services in Gangtok | FixNest`
+              : "Services in Gangtok | FixNest"}
+          </title>
+
+          <meta
+            name="description"
+            content={
+              category?.name
+                ? `Book trusted ${category.name} in Gangtok. Fast response, verified professionals and affordable pricing with FixNest.`
+                : "Book trusted home services in Gangtok with FixNest."
+            }
+          />
+        </Helmet>
         <Container>
           <div className="hidden lg:flex text-sm text-muted font-sans mb-4 flex items-center gap-2 flex-wrap">
             <Link to="/" className="hover:text-primary transition">

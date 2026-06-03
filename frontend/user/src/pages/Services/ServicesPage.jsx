@@ -9,6 +9,7 @@ import ServiceSkeletonCard from "../../components/ui/ServiceSkeletonCard";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { getOptimizedImage } from "../../utils/getOptimizedImag";
+import { Helmet } from 'react-helmet-async';
 
 const ServicesPage = () => {
 
@@ -26,7 +27,7 @@ const ServicesPage = () => {
         const data = res?.data?.data || [];
         setService(data);
 
-       setLoading(false); 
+        setLoading(false);
 
       } catch (error) {
         console.error(error);
@@ -64,6 +65,13 @@ const ServicesPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Home Services in Gangtok | FixNest</title>
+        <meta
+          name="description"
+          content="Explore electrical, plumbing, appliance repair and other home services available through FixNest in Gangtok."
+        />
+      </Helmet>
       <section className="pt-8 pb-16 bg-surface">
 
         <Container>

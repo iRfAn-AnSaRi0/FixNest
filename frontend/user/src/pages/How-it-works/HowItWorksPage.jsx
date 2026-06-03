@@ -2,6 +2,7 @@ import Container from "../../components/layout/Container";
 import { Link } from "react-router-dom";
 import Button from "../../components/ui/Button";
 import { ShieldCheck, PhoneCall, FileText, Star } from "lucide-react";
+import { Helmet } from 'react-helmet-async';
 
 const steps = [
     {
@@ -58,6 +59,13 @@ const HowItWorksPage = () => {
     return (
         <section className="pt-8 pb-16 bg-surface">
 
+            <Helmet>
+                <title>How FixNest Works | Easy Home Service Booking</title>
+                <meta
+                    name="description"
+                    content="Learn how FixNest works. Book trusted home services in a few simple steps and get professional help at your doorstep."
+                />
+            </Helmet>
             <Container>
 
                 {/* 🔗 BREADCRUMB */}
@@ -246,7 +254,7 @@ const HowItWorksPage = () => {
                                 {/* ICON (FIXED SIZE - NO SQUEEZE) */}
                                 <div className="min-w-[40px] h-10 flex items-center justify-center rounded-full bg-primary/10 text-primary text-lg">
                                     <item.icon
-                                        size={28}/>
+                                        size={28} />
                                 </div>
 
                                 {/* TEXT */}

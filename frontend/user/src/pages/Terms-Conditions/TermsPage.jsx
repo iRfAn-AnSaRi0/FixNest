@@ -1,10 +1,17 @@
 import Container from "../../components/layout/Container";
 import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 const TermsPage = () => {
     return (
         <section className="pt-8 pb-16 bg-surface min-h-screen">
-
+<Helmet>
+  <title>Terms & Conditions | FixNest</title>
+  <meta
+    name="description"
+    content="Review the Terms and Conditions governing the use of FixNest and our home service booking platform."
+  />
+</Helmet>
             <Container>
 
                 {/* 🔗 BREADCRUMB */}

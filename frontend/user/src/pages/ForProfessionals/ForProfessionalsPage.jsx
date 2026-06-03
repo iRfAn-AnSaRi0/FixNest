@@ -4,6 +4,7 @@ import Input from "../../components/ui/Input";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { Helmet } from 'react-helmet-async';
 
 const benefits = [
   {
@@ -64,7 +65,13 @@ const ForProfessionalsPage = () => {
 
   return (
     <section className="pt-8 pb-16 bg-surface min-h-screen">
-
+      <Helmet>
+        <title>Join FixNest as a Service Professional</title>
+        <meta
+          name="description"
+          content="Partner with FixNest and grow your business. Join as an electrician, plumber, appliance technician, or home service professional."
+        />
+      </Helmet>
       <Container>
 
         {/* 🔗 BREADCRUMB */}

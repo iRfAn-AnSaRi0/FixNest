@@ -2,6 +2,7 @@ import Container from "../../components/layout/Container";
 import Button from "../../components/ui/Button";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 const faqs = [
   {
@@ -36,14 +37,21 @@ const HelpPage = () => {
 
   return (
     <section className="pt-8 pb-16 bg-surface min-h-screen">
+      <Helmet>
+        <title>Help Center | FixNest</title>
+        <meta
+          name="description"
+          content="Find answers to common questions about bookings, payments, services, professionals, and customer support on FixNest."
+        />
+      </Helmet>
       <Container>
 
         {/* 🔗 BREADCRUMB */}
-                <div className="text-sm text-muted font-sans mb-6 flex items-center gap-2 flex-wrap">
-                    <Link to="/" className="hover:text-primary">Home</Link>
-                    <span>/</span>
-                    <span className="text-text font-medium">Help</span>
-                </div>
+        <div className="text-sm text-muted font-sans mb-6 flex items-center gap-2 flex-wrap">
+          <Link to="/" className="hover:text-primary">Home</Link>
+          <span>/</span>
+          <span className="text-text font-medium">Help</span>
+        </div>
 
         {/* 🔥 HEADER */}
         <div className="text-center max-w-2xl mx-auto mb-14">
@@ -103,7 +111,7 @@ const HelpPage = () => {
           </p>
 
           <Link to="/contact">
-          <Button variant="accent" size="lg" className="mt-5">Contact Support</Button>
+            <Button variant="accent" size="lg" className="mt-5">Contact Support</Button>
           </Link>
 
         </div>

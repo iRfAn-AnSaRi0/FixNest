@@ -8,6 +8,7 @@ import { useState } from "react";
 import { book } from "../../services/BookingApi";
 import BookingSuccess from "./BookingSuccess";
 import toast from "react-hot-toast";
+import { Helmet } from 'react-helmet-async';
 
 const BookingPage = () => {
     const { state } = useLocation(); // service ID
@@ -134,7 +135,13 @@ const BookingPage = () => {
 
     return (
         <section className="bg-background pt-8 pb-16 min-h-screen">
-
+            <Helmet>
+                <title>Book Home Services Online | FixNest Gangtok</title>
+                <meta
+                    name="description"
+                    content="Book trusted home services online with FixNest. Schedule electricians, plumbers, appliance repair, and maintenance professionals in Gangtok."
+                />
+            </Helmet>
             <Container>
 
                 <div className="text-sm text-muted font-sans mb-6 flex items-center gap-2 flex-wrap">
@@ -257,14 +264,14 @@ const BookingPage = () => {
                                 🚫 Service available only in Gangtok, Sikkim (737101)
                             </p> */}
 
-<div className="mt-3 bg-warning/10 border border-warning/30 rounded-lg p-3 text-xs text-muted">
-                            <p className="text-warning">
-                                🚫 Service available only in Gangtok, Sikkim
-                            </p>
+                            <div className="mt-3 bg-warning/10 border border-warning/30 rounded-lg p-3 text-xs text-muted">
+                                <p className="text-warning">
+                                    🚫 Service available only in Gangtok, Sikkim
+                                </p>
 
-                            <p className="text-warning">
-                                🚗 Additional travel charge of ₹100–₹200 may apply for locations below Gangtok Bazaar, Burtuk, and Tadong areas.
-                            </p>
+                                <p className="text-warning">
+                                    🚗 Additional travel charge of ₹100–₹200 may apply for locations below Gangtok Bazaar, Burtuk, and Tadong areas.
+                                </p>
                             </div>
 
                             <Input

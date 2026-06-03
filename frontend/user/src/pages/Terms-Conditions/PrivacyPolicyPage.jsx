@@ -1,10 +1,18 @@
 import Container from "../../components/layout/Container";
 import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 const PrivacyPolicyPage = () => {
   return (
     <section className="pt-8 pb-16 bg-surface min-h-screen">
 
+<Helmet>
+  <title>Privacy Policy | FixNest</title>
+  <meta
+    name="description"
+    content="Read the FixNest Privacy Policy to understand how we collect, use, and protect your personal information."
+  />
+</Helmet>
       <Container>
 
        {/* 🔗 BREADCRUMB */}

@@ -5,6 +5,7 @@ import Input from "../../components/ui/Input";
 import Textarea from "../../components/ui/Textarea";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Helmet } from 'react-helmet-async';
 
 const ContactSupportPage = () => {
     const [form, setForm] = useState({
@@ -39,7 +40,15 @@ const ContactSupportPage = () => {
 
     return (
         <section className="pt-8 pb-16 bg-surface min-h-screen">
+            <Helmet>
+                <title>Contact Support | FixNest</title>
+                <meta
+                    name="description"
+                    content="Need help? Contact the FixNest support team for booking assistance, service inquiries, and customer support."
+                />
+            </Helmet>
             <Container>
+
 
                 {/* 🔗 BREADCRUMB */}
                 <div className="text-sm text-muted font-sans mb-6 flex items-center gap-2 flex-wrap">
@@ -79,7 +88,7 @@ const ContactSupportPage = () => {
                             Email
                         </h3>
                         <p className="text-sm text-muted mt-1">
-                           servicesfixnest@gmail.com
+                            servicesfixnest@gmail.com
                         </p>
                     </div>
 

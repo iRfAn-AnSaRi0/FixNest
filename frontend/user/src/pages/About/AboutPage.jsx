@@ -2,24 +2,31 @@ import Container from "../../components/layout/Container";
 import Button from "../../components/ui/Button";
 import { Link } from "react-router-dom";
 import { Search, Wallet, Zap } from "lucide-react";
+import { Helmet } from 'react-helmet-async';
 
 const AboutPage = () => {
   return (
     <section className="pt-8 pb-16 bg-surface min-h-screen">
-
+      <Helmet>
+        <title>About FixNest | Trusted Home Services in Gangtok</title>
+        <meta
+          name="description"
+          content="Learn about FixNest, your trusted platform for electricians, plumbers, appliance repair, and home maintenance services in Gangtok."
+        />
+      </Helmet>
       <Container>
-   {/* 🔗 BREADCRUMB */}
-                <div className="text-sm text-muted font-sans mb-6 flex items-center gap-2 flex-wrap">
-                    <Link to="/" className="hover:text-primary">Home</Link>
-                    <span>/</span>
-                    <span className="text-text font-medium">About Us</span>
-                </div>
+        {/* 🔗 BREADCRUMB */}
+        <div className="text-sm text-muted font-sans mb-6 flex items-center gap-2 flex-wrap">
+          <Link to="/" className="hover:text-primary">Home</Link>
+          <span>/</span>
+          <span className="text-text font-medium">About Us</span>
+        </div>
 
         {/* 🔥 HERO (UPGRADED) */}
         <div className="text-center max-w-4xl mx-auto mb-24">
 
           <h1 className="font-heading text-3xl md:text-4xl font-bold font-bold text-text leading-tight">
-            Fixing Homes.  
+            Fixing Homes.
             <span className="block text-primary mt-2">
               Building Trust.
             </span>
@@ -28,11 +35,11 @@ const AboutPage = () => {
           <div className="w-16 h-1 bg-accent mx-auto mt-4 rounded"></div>
 
           <p className="text-muted mt-6 text-lg md:text-xl font-sans leading-relaxed">
-            FixNest is your trusted platform to book reliable home services — 
+            FixNest is your trusted platform to book reliable home services —
             fast, transparent, and hassle-free.
           </p>
 
-          
+
 
         </div>
 
@@ -45,7 +52,7 @@ const AboutPage = () => {
             </h2>
 
             <p className="text-muted mt-3 font-sans">
-              To simplify home services by connecting customers with verified professionals 
+              To simplify home services by connecting customers with verified professionals
               and delivering a seamless booking experience.
             </p>
           </div>
@@ -70,9 +77,9 @@ const AboutPage = () => {
           </h2>
 
           <p className="text-muted mt-4 font-sans leading-relaxed">
-            Finding reliable service professionals is often frustrating — 
-            unclear pricing, delays, and lack of trust.  
-            FixNest was built to solve this problem by bringing transparency, 
+            Finding reliable service professionals is often frustrating —
+            unclear pricing, delays, and lack of trust.
+            FixNest was built to solve this problem by bringing transparency,
             speed, and reliability into one simple platform.
           </p>
 
@@ -82,7 +89,7 @@ const AboutPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-24">
 
           <div className="p-6 rounded-xl border border-border bg-surface hover:shadow-card transition">
-             <Search size={28} className="text-primary" />
+            <Search size={28} className="text-primary" />
             <h3 className="font-heading font-semibold mt-3 text-text">
               Verified Professionals
             </h3>
@@ -102,7 +109,7 @@ const AboutPage = () => {
           </div>
 
           <div className="p-6 rounded-xl border border-border bg-surface hover:shadow-card transition">
-           <Zap size={28} className="text-primary" />
+            <Zap size={28} className="text-primary" />
             <h3 className="font-heading font-semibold mt-3 text-text">
               Fast & Reliable
             </h3>
