@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
         const fetchAdmin = async () =>{
             try {
                 const res = await baseApi.get("/me");
-                console.log(res.data);
+                // console.log(res.data);
                 setUser(res.data.data);
             } catch (error) {
                  console.error("Error fetching admin profile:", error);
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
     const logout = async () =>{
         try {
             const res =  await baseApi.post("/logout");
-            console.log(res.data);
+            // console.log(res.data);
             localStorage.removeItem("token")
             setUser(null);
         } catch (error) {

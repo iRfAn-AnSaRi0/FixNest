@@ -26,7 +26,7 @@ const Login = ({ onClose }) => {
     const data = { phone, password };
     try {
       const res = await login(data);
-      console.log(res.data.data);
+      // console.log(res.data.data);
 
       // ✅ Set user (optional if /me is used)
       localStorage.setItem("token", res.data.data.token)
