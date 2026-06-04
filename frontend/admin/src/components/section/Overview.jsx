@@ -11,7 +11,7 @@ const Overview = () => {
          const fetchDate = async () => {
              try {
                  const res = await OverviewApi();
-                  console.log(res.data.data);
+                //   console.log(res.data.data);
                  setData(res.data.data);
              } catch (error) {
                  console.error(error.response);

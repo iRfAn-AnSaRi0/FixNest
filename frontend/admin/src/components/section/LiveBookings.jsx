@@ -11,7 +11,7 @@ const LiveBookings = () => {
       try {
         const res = await Bookings();
         setBookings(res.data.data);
-        console.log(res.data);
+        // console.log(res.data);
 
       } catch (error) {
         console.error(error.response);
@@ -25,14 +25,14 @@ const LiveBookings = () => {
   // 🔥 status update handler
   const handleStatusChange = async (bookingId, status) => {
     try {
-      console.log("CLICKED:", bookingId, status);
+      // console.log("CLICKED:", bookingId, status);
       setLoadingId(bookingId);
 
       // await UpdateBookingStatus(bookingId, { status });
 
       const res = await UpdateBookingStatus(bookingId, { status });
 
-      console.log("SUCCESS:", res.data);
+      // console.log("SUCCESS:", res.data);
 
 
       // update UI instantly (no refresh needed)

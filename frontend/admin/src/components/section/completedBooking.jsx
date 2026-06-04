@@ -11,7 +11,7 @@ const RecentCompleted = () => {
     const fetchHistory = async () => {
       try {
         const res = await History();
-        console.log(res.data);
+        // console.log(res.data);
         setCompletedBookings(res.data.data);
 
       } catch (error) {
