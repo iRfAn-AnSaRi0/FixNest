@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Container from "./Container";
 import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
+// import logo from "../../assets/FixNest-logo.png"
 import MobileNavbar from "./MobileNavbar";
 import Button from "../ui/Button";
 import AuthModal from "../auth/AuthModel";
@@ -42,10 +43,10 @@ const { user, loading, authType, setAuthType, openAuth, setOpenAuth } = useAuth(
               <img
                 src={logo}
                 alt="FixNest logo"
-                className="w-8 h-8 object-contain"
+                className="w-10 h-10 object-contain"
               />
 
-              <span className="font-semibold font-heading">
+              <span className="font-semibold font-heading pt-1">
                 Fix<span className="text-accent font-bold">Nest</span>
               </span>
             </Link>
