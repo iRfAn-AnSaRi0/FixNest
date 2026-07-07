@@ -38,7 +38,7 @@ const AnnouncementBar = () => {
           </a>
 
           <a
-            href="https://wa.me/918001652981?text=Hi%20FixNest%20👋%0A%0AI%20would%20like%20to%20book%20a%20home%20service.%0A%0AService:%20%0ALocation:%20%0APreferred%20Time:%20"
+            href="https://wa.me/918001652981?text=Hi%20FixNest!%20I%20would%20like%20to%20book%20a%20home%20service.%20Please%20help%20me."
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 hover:text-green-300 transition-colors duration-200"
