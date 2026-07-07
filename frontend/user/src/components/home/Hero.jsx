@@ -22,6 +22,13 @@ const Hero = () => {
             professionals ready to help.
           </p>
 
+
+
+<p className="mt-5 text-sm font-medium text-accent">
+  🎉 Get <span className="font-semibold">10% OFF</span> on your first service.
+</p>
+
+
           <div className="mt-6 flex flex-wrap font-sans justify-center md:justify-start gap-3">
             <span className="px-3 py-1 text-sm border border-border rounded-md bg-background">
               Plumbing
@@ -47,16 +54,22 @@ const Hero = () => {
               </Button>
             </Link>
 
-            <Link to="/services">
+            {/* <Link to="/services">
               <Button variant="outline" size="lg">
-                View Services
+                Call Now
               </Button>
-            </Link>
+            </Link> */}
+
+            <a href="tel:+918392092388">
+              <Button variant="outline" size="lg">
+                📞 Call Now
+              </Button>
+            </a>
           </div>
         </div>
 
         <div className="hidden lg:flex justify-end">
-          <img src={img2} alt="Hero image" loading="lazy" className="transform scale-110"/>
+          <img src={img2} alt="Hero image" loading="lazy" className="transform scale-110" />
         </div>
       </Container>
     </section>
