@@ -24,9 +24,9 @@ const Hero = () => {
 
 
 
-<p className="mt-5 text-sm font-medium text-accent">
-  🎉 Get <span className="font-semibold">10% OFF</span> on your first service.
-</p>
+          <p className="mt-5 text-sm font-medium text-accent">
+            🎉 Get <span className="font-semibold">10% OFF</span> on your first service.
+          </p>
 
 
           <div className="mt-6 flex flex-wrap font-sans justify-center md:justify-start gap-3">

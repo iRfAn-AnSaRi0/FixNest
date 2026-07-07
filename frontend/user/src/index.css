@@ -33,7 +33,7 @@
 
 /* Announcement Bar */
 
-.announcement-track {
+/* .announcement-track {
   display: flex;
   width: max-content;
   animation: marquee 22s linear infinite;
@@ -69,4 +69,4 @@
         animation-duration:18s;
     }
 
-}
+} */
